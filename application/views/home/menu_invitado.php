@@ -1,0 +1,2 @@
+<li><a href="#" data-toggle="modal" data-target="#RegistroModal"><i class="l-basic-todolist-pen"></i><span class="txt">Registrarse</span></a></li>
+<li><a href="#" data-toggle="modal" data-target="#LoginModal"><i class="l-basic-key"></i><span class="txt">Iniciar Sesión</span></a></li>
