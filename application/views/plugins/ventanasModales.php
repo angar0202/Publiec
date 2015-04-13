@@ -4,3 +4,6 @@
 <script src="<?=site_url()?>plugins/charts/sparklines/jquery.sparkline.js"></script>
 <!--<script src="<?=site_url()?>js/pages/forms-validation.js"></script>-->
 <script src="<?=site_url()?>js/pages/custom/modals.js"></script>
+<script src="<?=site_url()?>plugins/ui/title-notifier/title_notifier.js"></script>
+<script src="<?=site_url()?>plugins/ui/notify/jquery.gritter.js"></script>
+<script src="<?=site_url()?>plugins/ui/bootstrap-sweetalert/sweet-alert.js"></script>

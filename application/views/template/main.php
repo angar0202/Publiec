@@ -89,6 +89,6 @@
         
 
         <?=$plugins?>        
-        
+        <script src="<?=$url?>js/pages/custom/registro.js"></script>
     </body>
 </html>

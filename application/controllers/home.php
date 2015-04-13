@@ -8,6 +8,7 @@ class Home extends CI_Controller {
         parent::__construct();
         /*$this->load->model('TipoNegocioModel','TipoNegocio');
         $this->load->model('CategoriaModel','Categoria');*/
+        
     }
 
 	public function index()
@@ -57,7 +58,7 @@ class Home extends CI_Controller {
 		$main["body"]=$this->load->view($this->views->CONTAINER,$sections,true);
 
 		if($isLogin==false){
-		$main["plugins"]=$this->load->view($this->views->VENTANA_MODALES,null,true);	
+		$main["plugins"]=$this->load->view($this->views->VENTANA_MODALES,null,true);
 		}else{
 			$main["plugins"]="";
 		}

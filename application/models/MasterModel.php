@@ -24,20 +24,23 @@ class MasterModel extends CI_Model {
 
     function GetWhere($where){
     	$sql="SELECT * FROM $this->table WHERE 1=1";
-        if($where==""){
+        if($where !=""){
         	$sql.=" AND $where";
         }
-        $result = $this->db->query($sql);
-        return $result->row();
+        return $this->db->query($sql);
     }
 
     function GetCount($where=""){
         $sql="SELECT count($this->primaryKey) as cantidad FROM $this->table WHERE 1=1";
-        if($where==""){
+        if($where != ""){
             $sql.=" AND $where";
         }
-        $result = $this->db->query($sql);
-        return $result->cantidad;
+        $query = $this->db->query($sql);
+        foreach ($query->result() as $row)
+        {
+            return $row->cantidad;
+        }
+        return 0;
     }
 
     function Create($data){

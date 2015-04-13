@@ -8,17 +8,18 @@ class UsuarioModel extends MasterModel {
         $this->primaryKey="UsuarioID";
     }
     
-    public function create()
+    public function createUsuario()
 	{
+		$mensaje="Ocurrio un problema al registrar el usuario.";
 		$nombreUsuario=$this->input->post('usuario');
 		if(trim($nombreUsuario)==""){
-			$mensaje="Campo de Usuario vacio";
+			$mensaje="Campo de Usuario esta vacio";
 		}elseif(trim($this->input->post('password'))==""){
-			$mensaje="Campo Password vacio";
+			$mensaje="Campo de contraseña esta vacio";
 		}elseif(trim($this->input->post('email'))==""){
-			$mensaje="Campo Email vacio";
+			$mensaje="Campo de email esta vacio";
 		}elseif(trim($this->input->post('nombre'))==""){
-			$mensaje="Campo Nombre Completo vacio";
+			$mensaje="Campo del Nombre Completo esta vacio";
 		}else{
 			$encontrado=$this->getCount("LOWER(NombreUsuario)=LOWER('$nombreUsuario')");
 			if($encontrado==0){
