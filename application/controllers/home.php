@@ -5,17 +5,11 @@ class Home extends CI_Controller {
 	function __construct()
     {
         // Call the Model constructor
-        parent::__construct();
-        /*$this->load->model('TipoNegocioModel','TipoNegocio');
-        $this->load->model('CategoriaModel','Categoria');*/
-        
-    }
-
-	public function index()
-	{
+        parent::__construct();        
+    }	
+	protected function preparePage(){
 		$isLogin=false;
 		$isAdmin=false;
-
 		if($isLogin){
 			if($isAdmin){
 				$top["panel_superior"]=$this->load->view($this->views->PANEL_SUPERIOR,null,true);
@@ -25,8 +19,7 @@ class Home extends CI_Controller {
 		}else{
 			$top["panel_superior"]="";
 		}
-		$sections["header"]=$this->load->view($this->views->HEADER,$top,true);
-		
+		$sections["header"]=$this->load->view($this->views->HEADER,$top,true);		
 		if($isLogin){
 			$control["panel_usuario"]=$this->load->view($this->views->PANEL_USUARIO,null,true);
 			if($isAdmin){
@@ -39,31 +32,53 @@ class Home extends CI_Controller {
 			$control["panel_usuario"]="";
 			$control["menu_usuario"]=$this->load->view($this->views->MENU_INVITADO,null,true);
 		}
-		$sections["menu"]=$this->load->view($this->views->MENU,$control,true);
-		
-		$sections["publicaciones"]=$this->load->view($this->views->ACTIVIDAD_NEGOCIOS,null,true);
-		
+		$sections["menu"]=$this->load->view($this->views->MENU,$control,true);		
+		$sections["publicaciones"]=$this->load->view($this->views->ACTIVIDAD_NEGOCIOS,null,true);		
 		if($isLogin){
 			$info["info_negocio"]=$this->load->view($this->views->INFO_NEGOCIO,null,true);	
 		}else{
 			$info["info_negocio"]="";
 		}
+		return array($info,$sections,$isLogin,$isAdmin);
+	}
 
-		//$info["mapa_publicaciones"]=$this->load->view($this->views->MAPA,null,true);	
-		$info["mapa_publicaciones"]=$this->load->view($this->views->PUBLICACIONES,null,true);
+	public function index()
+	{
+		$data=$this->preparePage();
+		$info=$data[0];
+		$sections=$data[1];
+		$isLogin=$data[2];
+		$isAdmin=$data[3];		
+		$info["mapa_publicaciones"]=$this->load->view($this->views->MAPA,null,true);
 		$sections["container"]=$this->load->view($this->views->HOME_INDEX,$info,true);
 		$sections["container"].=$this->load->view($this->views->REGISTRO,null,true); // Se agrega pantalla modal de REgistro de Usuario
 		$sections["container"].=$this->load->view($this->views->LOGIN,null,true); // Se agrega pantalla modal de LOGIN de Usuario
-
 		$main["body"]=$this->load->view($this->views->CONTAINER,$sections,true);
-
+		if($isLogin==false){
+		$main["plugins"]=$this->load->view($this->views->VENTANA_MODALES,null,true);
+		}else{
+			$main["plugins"]="";
+		}		
+		$this->load->view($this->views->MAIN,$main);		
+	}
+	public function publicaciones()
+	{
+		$data=$this->preparePage();
+		$info=$data[0];
+		$sections=$data[1];		
+		$isLogin=$data[2];
+		$isAdmin=$data[3];
+		
+		$info["mapa_publicaciones"]=$this->load->view($this->views->PUBLICACIONES,null,true);
+		$sections["container"]=$this->load->view($this->views->HOME_INDEX,$info,true);
+		$sections["container"].=$this->load->view($this->views->REGISTRO,null,true); // Se agrega pantalla modal de Registro de Usuario
+		$sections["container"].=$this->load->view($this->views->LOGIN,null,true); // Se agrega pantalla modal de LOGIN de Usuario
+		$main["body"]=$this->load->view($this->views->CONTAINER,$sections,true);
 		if($isLogin==false){
 		$main["plugins"]=$this->load->view($this->views->VENTANA_MODALES,null,true);
 		}else{
 			$main["plugins"]="";
 		}
-		
 		$this->load->view($this->views->MAIN,$main);		
 	}
-
 }
