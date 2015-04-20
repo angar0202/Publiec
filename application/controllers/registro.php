@@ -6,7 +6,7 @@ class Registro extends CI_Controller {
     {
         // Call the Model constructor
         parent::__construct();
-        $this->load->model('UsuarioModel','Usuario');        
+        $this->load->model('UsuarioModel','Usuario');   
     }
 
 	public function create()
@@ -14,7 +14,11 @@ class Registro extends CI_Controller {
 		$isLogin=false;
 		if(!$isLogin){
 			$mensaje=$this->Usuario->createUsuario();
-			//echo json_encode(array('mensaje' => $mensaje));
+			$flag=false;
+			if (strpos($mensaje,'correctamente') !== false) {
+			    $flag=true;
+			}
+			$mensaje=json_encode(array('mensaje' => $mensaje,'resultado'=>$flag));
     		echo $mensaje;
 		}
 	}

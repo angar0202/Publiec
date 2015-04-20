@@ -37,6 +37,7 @@
         <link rel="icon" href="<?=$url?>img/ico/favicon.ico" type="image/png">
         <!-- Windows8 touch icon ( http://www.buildmypinnedsite.com/ )-->
         <meta name="msapplication-TileColor" content="#3399cc" />
+        
     </head>
 	<body>
 	<?=$body?>
@@ -85,10 +86,17 @@
         <!--Aqui va el js de mapas-->
         <script src="<?=$url?>js/jquery.dynamic.js"></script>
         <script src="<?=$url?>js/main.js"></script>
+                
+        <script src="<?=site_url()?>plugins/ui/title-notifier/title_notifier.js"></script>
+        <script src="<?=site_url()?>plugins/ui/notify/jquery.gritter.js"></script>
+        <script src="<?=site_url()?>plugins/ui/bootstrap-sweetalert/sweet-alert.js"></script>
         <!--<script src="<?=$url?>js/pages/maps-google.js"></script>-->
-        
+        <script src="<?=$url?>js/pages/custom/general.js"></script>
 
         <?=$plugins?>        
+        
         <script src="<?=$url?>js/pages/custom/registro.js"></script>
+        <script src="<?=$url?>js/pages/custom/login.js"></script>
+        <script src="<?=$url?>js/pages/custom/contacto.js"></script>
     </body>
 </html>

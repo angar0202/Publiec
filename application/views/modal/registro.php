@@ -34,13 +34,13 @@
                                     <span class="input-group-addon"><i class="fa fa-key"></i></span>
                                     <input type="password" name="password1" id="password1" class="form-control" placeholder="Repita la contraseña">
                                 </div>
-                                <span class="help-block text-right"><a href="#">¿Tienes una cuenta creada?</a></span> 
+                                <span class="help-block text-right"><a href="#" id="goToLogin">¿Tienes una cuenta creada?</a></span> 
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="panel-footer gray-lighter-bg bt">
-                    <p class="text-center"><button class="btn btn-success" id="registrar">Iniciar Sesión</button></p>
+                    <p class="text-center"><button class="btn btn-success" id="registrar">Registrarse</button></p>
                 </div>
                                 </div>                                
                             </div>

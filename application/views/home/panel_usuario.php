@@ -15,7 +15,7 @@
                                     <li><a href="profile.html"><i class="fa fa-edit"></i>Editar Perfil</a>
                                     </li>
                                     <li class="divider"></li>
-                                    <li><a href="login.html"><i class="fa fa-power-off"></i>Cerrar Sesión</a>
+                                    <li><a href="#" id="logout"><i class="fa fa-power-off"></i>Cerrar Sesión</a>
                                     </li>
                                 </ul>
                             </div>

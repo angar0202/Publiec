@@ -13,11 +13,11 @@
                                                         <div class="col-lg-12">
                                                             <div class="input-group input-icon">
                                                                 <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                                                <input type="text" name="username" id="username" class="form-control required" placeholder="Ingrese su usuario">
+                                                                <input type="text" id="usuarioLogin" class="form-control required" placeholder="Ingrese su usuario">
                                                             </div>
                                                             <div class="input-group input-icon">
                                                                 <span class="input-group-addon"><i class="fa fa-key"></i></span>
-                                                                <input type="password" name="password" id="password" class="form-control required" placeholder="Ingrese su contraseña">
+                                                                <input type="password" id="passwordLogin" class="form-control required" placeholder="Ingrese su contraseña">
                                                             </div>
                                                             <span class="help-block text-right"><a href="#">¿Olvidastes tu contraseña?</a></span> 
                                                         </div>
@@ -27,7 +27,7 @@
                                             <div class="panel-footer gray-lighter-bg bt">
                                                 <h4 class="text-center"><strong>¡Bienvenido! Ingresa tus datos</strong>
                                                 </h4>
-                                                <p class="text-center"><button class="btn btn-primary" type="submit">Iniciar Sesión</button>
+                                                <p class="text-center"><button class="btn btn-primary" type="submit" id="login">Iniciar Sesión</button>
                                                 </p>
                                             </div>
                                         </div>

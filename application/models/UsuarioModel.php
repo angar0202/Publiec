@@ -25,7 +25,7 @@ class UsuarioModel extends MasterModel {
 			if($encontrado==0){
 				$data = array(
 					'NombreUsuario' =>  $this->input->post('usuario'),
-					'Password' =>  $this->input->post('password'),
+					'Password' =>  md5($this->input->post('password')),
 					'Email' => $this->input->post('email'),
 					'NombreCompleto' => $this->input->post('nombre')
 					);
@@ -67,10 +67,9 @@ class UsuarioModel extends MasterModel {
 	}
 
 	public function login(){
-		$nombreUsuario=$this->input->post('usuario');
-		$password=trim($this->input->post('password'));
-		$where= array('NombreUsuario' =>  strtolower($nombreUsuario) ,'Password'=> md5($password));		
+		$nombreUsuario=$this->input->post('usuarioLogin');
+		$password=trim($this->input->post('passwordLogin'));
+		$where= array('NombreUsuario' =>  strtolower($nombreUsuario) ,'Password'=> md5($password));
 		return $this->first($where);
 	}
-
 }

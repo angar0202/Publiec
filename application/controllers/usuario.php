@@ -7,16 +7,40 @@ class Usuario extends CI_Controller {
         // Call the Model constructor
         parent::__construct();
         $this->load->model('TipoNegocioModel','TipoNegocio');
-        $this->load->model('CategoriaModel','Categoria');        
+        $this->load->model('CategoriaModel','Categoria');   
+        $this->load->model('UsuarioModel','Usuario');     
     }
-
-	public function index()
+	
+	public function login()
 	{
-		$sections["header"]=$this->load->view($this->views->HEADER,null,true);
-		$sections["menu"]=$this->load->view($this->views->MENU,null,true);
-		$sections["publicaciones"]=$this->load->view($this->views->PUBLICACIONES,null,true);
-		$sections["container"]=$this->load->view($this->views->USUARIO_INDEX,null,true);
-		$main["body"]=$this->load->view($this->views->CONTAINER,$sections,true);		
-		$this->load->view($this->views->MAIN,$main);		
+			$flag=false;
+			if(!$this->common->isLogin()){
+				$usuario=$this->Usuario->login();				
+				if($usuario!=null) {
+				    $newdata = array(
+					   'id_usuario' => $usuario->UsuarioID,
+	                   'username'  => $usuario->NombreUsuario,
+	                   'password'  => $usuario->Password,
+	                   'fullname'  => $usuario->NombreCompleto,
+	                   'email'  => $usuario->Email,
+	                   'logged_in' => TRUE
+	               );
+				   $this->session->set_userdata($newdata);
+				   $mensaje="Iniciando sesión...";				   
+				   $flag=true;
+				}else{
+					$mensaje="Usuario o contraseña incorrectos";
+				}
+			}else{
+				$mensaje="Ya a iniciado sesión";
+			}
+			$mensaje=json_encode(array('mensaje' => $mensaje,'resultado'=>$flag));
+    		echo $mensaje;
+	}
+
+	public function logout()
+	{
+		$this->common->logout();
+		redirect('home','refresh'); 
 	}
 }

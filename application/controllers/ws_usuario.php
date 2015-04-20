@@ -25,8 +25,8 @@ class ws_usuario extends CI_Controller {
 	}
 
 	public function login(){
-		$nombreUsuario=trim($this->input->post('usuario',TRUE));
-		$password=trim($this->input->post('password',TRUE));
+		$nombreUsuario=trim($this->input->post('usuarioLogin',TRUE));
+		$password=trim($this->input->post('passwordLogin',TRUE));
 		if($nombreUsuario==""){
 			$mensaje="Campo de usuario vacio";
 		}elseif($password==""){

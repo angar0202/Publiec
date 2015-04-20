@@ -211,16 +211,16 @@
                                             <h4 class="panel-title">Contacto</h4>
                                         </div>
                                         <div class="panel-body">
-                                            <form class="form-horizontal" role="form">
+                                            <form class="form-horizontal" role="form" id="ContactoForm">
                                                 <div class="form-group">
                                                     <div class="col-lg-12">
                                                         <div class="row">
                                                             <!-- Start .row -->
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                                                <input type="text" class="form-control" placeholder="Nombres">
+                                                                <input type="text" id="ContactoNombresTextbox" class="form-control" placeholder="Nombres">
                                                             </div>
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                                                <input type="text" class="form-control" placeholder="Apellidos">
+                                                                <input type="text" id="ContactoApellidoTextbox" class="form-control" placeholder="Apellidos">
                                                             </div>
                                                         </div>
                                                         <!-- End .row -->
@@ -231,10 +231,10 @@
                                                         <div class="row">
                                                             <!-- Start .row -->
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                                                <input type="text" class="form-control" placeholder="Telefono">
+                                                                <input type="text" id="ContactoTelefonoTextbox" class="form-control" placeholder="Telefono">
                                                             </div>
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                                                <input type="text" class="form-control" placeholder="Email">
+                                                                <input type="text" id="ContactoEmailTextbox" class="form-control" placeholder="Email">
                                                             </div>
                                                         </div>
                                                         <!-- End .row -->
@@ -243,7 +243,7 @@
                                                 <!-- End .form-group  -->
                                                 <div class="form-group">
                                                     <div class="col-lg-12">
-                                                        <textarea class="form-control" name="textarea" id="textarea" rows="3" placeholder="Direccion"></textarea>
+                                                        <textarea class="form-control" name="textarea" id="ContactoDireccionTextbox" rows="3" placeholder="Direccion"></textarea>
                                                     </div>
                                                 </div>
                                                 <!-- End .form-group  -->
@@ -252,7 +252,8 @@
                                                         <div class="row">
                                                             <!-- Start .row -->
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-left">
-                                                                <button type="submit" class="btn btn-default">Agregar</button>
+                                                                <a href="#" class="btn btn-default" id="AgregarContactoButton">Agregar</a>
+                                                                <a href="#" style="visibility: hidden" class="btn btn-danger" id="CancelarContactoButton">Cancelar</a>
                                                             </div>
                                                         </div>
                                                         <!-- End .row -->
@@ -272,50 +273,18 @@
                                         <h4 class="panel-title">Lista de Contactos</h4>
                                     </div>
                                     <div class="panel-body">
-                                        <table class="table table-hover">
+                                        <table class="table table-hover" id="contactosTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="per5">
-                                                        #
-                                                    </th>
-                                                    <th class="per40">Employe</th>
-                                                    <th class="per40">Position</th>
-                                                    <th class="per15">Salary</th>
+                                                    <th class="per30">
+                                                        
+                                                    </th>                                                    
+                                                    <th class="per40">Nombre Contacto</th>
+                                                    <th class="per40">Correo</th>                                                    
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>
-                                                        1
-                                                    </td>
-                                                    <td>Jacob Olsen</td>
-                                                    <td>Developer</td>
-                                                    <td>2530$</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        2
-                                                    </td>
-                                                    <td>Lara James</td>
-                                                    <td>SEO</td>
-                                                    <td>3700$</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        3
-                                                    </td>
-                                                    <td>Steve Sidwell</td>
-                                                    <td>Photographer</td>
-                                                    <td>1340$</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        4
-                                                    </td>
-                                                    <td>Elena Dobrev</td>
-                                                    <td>Project manger</td>
-                                                    <td>5600$</td>
-                                                </tr>
+                                                
                                             </tbody>
                                         </table>
                                     </div>

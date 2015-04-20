@@ -13,7 +13,7 @@ class Home extends CI_Controller {
 
 	public function index()
 	{
-		$isLogin=false;
+		$isLogin=$this->common->isLogin();
 		$isAdmin=false;
 
 		if($isLogin){
@@ -27,11 +27,15 @@ class Home extends CI_Controller {
 		}
 		$sections["header"]=$this->load->view($this->views->HEADER,$top,true);
 		
-		if($isLogin){
-			$control["panel_usuario"]=$this->load->view($this->views->PANEL_USUARIO,null,true);
-			if($isAdmin){
+		if($isLogin)
+		{
+			$control["panel_usuario"]="";//$this->load->view($this->views->PANEL_USUARIO,null,true);
+			if($isAdmin)
+			{
 				$menu["menu_administrador"]=$this->load->view($this->views->MENU_ADMINISTRADOR,null,true);	
-			}else{
+			}
+			else
+			{
 				$menu["menu_administrador"]="";
 			}
 			$control["menu_usuario"]=$this->load->view($this->views->MENU_USUARIO,$menu,true);			
@@ -43,14 +47,17 @@ class Home extends CI_Controller {
 		
 		$sections["publicaciones"]=$this->load->view($this->views->ACTIVIDAD_NEGOCIOS,null,true);
 		
-		if($isLogin){
-			$info["info_negocio"]=$this->load->view($this->views->INFO_NEGOCIO,null,true);	
-		}else{
+		if($isLogin)
+		{
+			$info["info_negocio"]="";//$this->load->view($this->views->INFO_NEGOCIO,null,true);	
+		}
+		else
+		{
 			$info["info_negocio"]="";
 		}
 
-		//$info["mapa_publicaciones"]=$this->load->view($this->views->MAPA,null,true);	
-		$info["mapa_publicaciones"]=$this->load->view($this->views->PUBLICACIONES,null,true);
+		$info["mapa_publicaciones"]=$this->load->view($this->views->MAPA,null,true);	
+		//$info["mapa_publicaciones"]=$this->load->view($this->views->PUBLICACIONES,null,true);
 		$sections["container"]=$this->load->view($this->views->HOME_INDEX,$info,true);
 		$sections["container"].=$this->load->view($this->views->REGISTRO,null,true); // Se agrega pantalla modal de REgistro de Usuario
 		$sections["container"].=$this->load->view($this->views->LOGIN,null,true); // Se agrega pantalla modal de LOGIN de Usuario
@@ -58,11 +65,10 @@ class Home extends CI_Controller {
 		$main["body"]=$this->load->view($this->views->CONTAINER,$sections,true);
 
 		if($isLogin==false){
-		$main["plugins"]=$this->load->view($this->views->VENTANA_MODALES,null,true);
+			$main["plugins"]=$this->load->view($this->views->VENTANA_MODALES,null,true);
 		}else{
-			$main["plugins"]="";
+			$main["plugins"]=$this->load->view($this->views->MAPAS,null,true);
 		}
-		
 		$this->load->view($this->views->MAIN,$main);		
 	}
 

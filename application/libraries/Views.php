@@ -47,4 +47,5 @@ class Views {
 	*/
 	public $ELIMINAR_ARCHIVO='plugins/eliminarArchivo';
 	public $VENTANA_MODALES='plugins/ventanasModales';	
+	public $MAPAS='plugins/mapas';	
 }

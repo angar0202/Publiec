@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $("#login-form").validate({
+    /*$("#login-form").validate({
         //ignore: null,
         onkeyup: true,
         onfocusout: true,
@@ -39,5 +39,5 @@ $(document).ready(function() {
             $(label).closest('.form-group').removeClass('has-error');
             label.remove();
         }
-    });
+    });*/
 });

@@ -22,31 +22,31 @@ $(document).ready(function() {
           gmap.setCenter(position.coords.latitude, position.coords.longitude);
         },
         error: function(error){
-            $.gritter.add({
+            /*$.gritter.add({
                 title: 'Error !!!',
                 text: 'Geolocation failed: '+error.message,
                 close_icon: 'en-cross',
                 icon: 'ec-location',
                 class_name: 'error-notice'
-            }); 
+            });*/ 
         },
         not_supported: function(){
-            $.gritter.add({
+            /*$.gritter.add({
                 title: 'Error !!!',
                 text: 'Your browser do not support geolocation',
                 close_icon: 'en-cross',
                 icon: 'ec-location',
                 class_name: 'error-notice'
-            }); 
+            });*/ 
         },
         always: function(){
-            $.gritter.add({
+            /*$.gritter.add({
                 title: 'Done !!!',
                 text: 'Your location is detected',
                 close_icon: 'en-cross',
                 icon: 'ec-location',
                 class_name: 'success-notice'
-            });     
+            });*/     
         }
     });
     
