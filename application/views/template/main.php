@@ -83,6 +83,10 @@
         <script src="<?=$url?>plugins/forms/dual-list-box/jquery.bootstrap-duallistbox.js"></script>
         <script src="<?=$url?>plugins/forms/dropzone/dropzone.js"></script>        
         <script src="<?=$url?>plugins/charts/sparklines/jquery.sparkline.js"></script>
+        <script src="<?=$url?>plugins/forms/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
+        <script src="<?=$url?>js/libs/typeahead.bundle.js"></script>
+        <script src="<?=$url?>plugins/forms/summernote/summernote.js"></script>
+        <script src="<?=$url?>plugins/forms/bootstrap-markdown/bootstrap-markdown.js"></script>
         <!--Aqui va el js de mapas-->
         <script src="<?=$url?>js/jquery.dynamic.js"></script>
         <script src="<?=$url?>js/main.js"></script>
@@ -95,7 +99,7 @@
         <script src="<?=$url?>js/pages/custom/general.js"></script>
 
         <?=$plugins?>        
-        
+        <script src="<?=$url?>js/pages/forms-advanced.js"></script>
         <script src="<?=$url?>js/pages/custom/registro.js"></script>
         <script src="<?=$url?>js/pages/custom/login.js"></script>
         <script src="<?=$url?>js/pages/custom/contacto.js"></script>

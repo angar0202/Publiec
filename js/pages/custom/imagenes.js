@@ -1,20 +1,29 @@
 $(document).ready(function() {
-var myDropzone = new Dropzone('#imagenes',{
-            url: baseURL()+"img/",
-            addRemoveLinks: true,
-            maxFiles: 4,
-            acceptedFiles: ".png, .jpg", //is this correct? I got an error if im using this
-            init: function(){
-                this.on("success", function(file, data) {
-                    //......
-                    alert("formato correcto");
+
+              // Now that the DOM is fully loaded, create the dropzone, and setup the
+              // event listeners
+              var myDropzone = new Dropzone("#my-awesome-dropzone",{
+                    maxFiles: 5,
+                    maxFilesize: 1,
+                    acceptedFiles: "image/*", /*is this correct?*/
+                    init: function(){
+                        this.on("success", function(file, data) {
+                            /*..*/                            
+                            });
+                        this.on("maxfilesexceeded", function(file){
+                            alert("No more files please!");
+                            myDropzone.removeFile(file);
+                        });
+                        this.on("uploadprogress", function(file, progress) {
+                            console.log("File progress", progress);
+                        });    
+                        }
+                });              
+              myDropzone.on("addedfile", function(file) {
+                  file.previewElement.addEventListener("click", function() {
+                    if (confirm('¿Desea remover este archivo?')) {
+                        myDropzone.removeFile(file);
+                    }
+                  });
                 });
-                this.on("removedfile", function(file) {
-                   alert("formato incorrecto");
-                });
-            },
-        });
-        function baseURL(){
-                return window.location.origin+'/Publiec/';
-        }
 });

@@ -36,13 +36,13 @@
                                             <form class="form-horizontal" role="form">
                                                 <div class="form-group">
                                                     <div class="col-lg-12">
-                                                        <input type="text" class="form-control" placeholder="Nombre">                                                        
+                                                        <input type="text" class="form-control" id="NegocioNombreTextbox" placeholder="Nombre">                                                        
                                                     </div>
                                                 </div>
                                                 <!-- End .form-group  -->
                                                 <div class="form-group">
                                                     <div class="col-lg-12">
-                                                        <textarea class="form-control" name="textarea" id="textarea" rows="3" placeholder="Descripcion"></textarea>
+                                                        <textarea class="form-control" id="NegocioDescripcionTextbox" rows="3" placeholder="Descripcion"></textarea>
                                                     </div>
                                                 </div>
                                                 <!-- End .form-group  -->
@@ -51,13 +51,35 @@
                                                         <div class="row">
                                                             <!-- Start .row -->
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-left">
-                                                                <button type="submit" class="btn btn-default">Agregar</button>
+                                                                <input type="text" class="form-control" id="NegocioEmailTextbox" placeholder="Email">                                                                
+                                                            </div>
+                                                            <!-- Start .row -->
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-left">
+                                                                <input type="text" class="form-control" id="NegocioTelefonoTextbox" placeholder="Telefono">
                                                             </div>
                                                         </div>
                                                         <!-- End .row -->
                                                     </div>
                                                 </div>
                                                 <!-- End .form-group  -->
+                                                <div class="form-group">
+                                                <label class="col-lg-2 col-md-3 control-label" for="">Categorias</label>
+                                                <div class="col-lg-10 col-md-9">
+                                                    <select class="form-control select2" multiple>
+                                                        <optgroup label="Informatica">
+                                                            <option value="AK">Venta de equipos de computo</option>
+                                                            <option value="HI">Desarrollo de Software</option>
+                                                        </optgroup>
+                                                        <optgroup label="Comida">
+                                                            <option value="CA">Comida Rapida</option>
+                                                            <option value="NV">Comida Italiana</option>
+                                                            <option value="OR">Mariscos</option>
+                                                            <option value="WA">Pizzeria</option>
+                                                        </optgroup>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <!-- End .form-group  -->
                                             </form>
                                         </div>
                                     </div>
