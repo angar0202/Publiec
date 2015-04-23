@@ -7,7 +7,7 @@
                         <div id="page-header" class="clearfix">
                             <div class="page-header">
                                 <h2>Mis Negocios</h2>
-                                <span class="txt">Administración de mis negocios, servicios, etc. registrados</span>
+                                <span class="txt">Creación de nuevo negocio o servicio</span>
                             </div>
                             <div class="header-stats">
                                 <div class="spark clearfix">
@@ -64,13 +64,16 @@
                             </div>
                             <!-- col-lg-6 end here -->
                             <div class="col-md-6 sortable-layout">
-                                <div class="panel panel-default toggle panelMove panelClose panelRefresh">
+                                <div class="panel panel-default plain toggle">
                                     <!-- Start .panel -->
                                     <div class="panel-heading">
                                         <h4 class="panel-title">Cargar Imagenes de Negocio</h4>
                                     </div>
                                     <div class="panel-body">
-                                        <form id="my-awesome-dropzone" action="<?=site_url()?>uploads" class="dropzone"></form>
+                                        <div class="negocio-upload">
+                                            <form id="my-awesome-dropzone" action="<?=site_url()?>uploads" class="dropzone"></form>
+                                        </div>
+                                        <div id="">
                                     </div>
                                 </div>
                                 <!-- End .panel -->
@@ -86,13 +89,13 @@
                                             <h4 class="panel-title">Ubicacion</h4>
                                         </div>
                                         <div class="panel-body">
-                                            <form class="form-horizontal" role="form">
+                                            <form class="form-horizontal" role="form" id="UbicacionForm">
                                                 <div class="form-group">
                                                     <div class="col-lg-12">
                                                         <div class="row">
                                                             <!-- Start .row -->
                                                             <div class="col-lg-12">
-                                                                <input type="text" class="form-control" placeholder="Direccion">
+                                                                <input id="UbicacionDireccionTextbox" type="text" class="form-control" placeholder="Direccion">
                                                             </div>
                                                         </div>
                                                         <!-- End .row -->
@@ -102,7 +105,7 @@
                                                     <div class="col-lg-12">
                                                         <div class="row" style="margin:0 auto;text-align: center;">
                                                             <!-- Start .row -->
-                                                                <div id="gmap" style="width:100%;height:250px;"></div>                                                            
+                                                                <div id="UbicacionMapa" style="width:100%;height:250px;"></div>                                                            
                                                         </div>
                                                         <!-- End .row -->
                                                     </div>
@@ -110,7 +113,7 @@
                                                 <!-- End .form-group  -->
                                                 <div class="form-group">
                                                     <div class="col-lg-12">
-                                                        <input type="text" class="form-control" placeholder="Descripcion">
+                                                        <input id="UbicacionDescripcionTextbox" type="text" class="form-control" placeholder="Descripcion">
                                                     </div>
                                                 </div>
                                                 <!-- End .form-group  -->
@@ -119,10 +122,10 @@
                                                         <div class="row">
                                                             <!-- Start .row -->
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                                                <input type="text" class="form-control" placeholder="Latitud">
+                                                                <input id="UbicacionLatitudTextbox" type="text" class="form-control" placeholder="Latitud">
                                                             </div>
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                                                <input type="text" class="form-control" placeholder="Longitud">
+                                                                <input id="UbicacionLongitudTextbox" type="text" class="form-control" placeholder="Longitud">
                                                             </div>
                                                         </div>
                                                         <!-- End .row -->
@@ -134,7 +137,8 @@
                                                         <div class="row">
                                                             <!-- Start .row -->
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-left">
-                                                                <button type="submit" class="btn btn-default">Agregar</button>
+                                                                <a href="#" class="btn btn-default" id="AgregarUbicacionButton">Agregar</a>
+                                                                <a href="#" style="visibility: hidden" class="btn btn-danger" id="CancelarUbicacionButton">Cancelar</a>
                                                             </div>
                                                         </div>
                                                         <!-- End .row -->
@@ -154,45 +158,17 @@
                                         <h4 class="panel-title">Ubicaciones del Negocio</h4>
                                     </div>
                                     <div class="panel-body">
-                                        <table class="table table-hover">
+                                        <table class="table table-hover" id="ubicacionesTable">
                                             <thead>
                                                 <tr>
-                                                    <th class="per5">
-                                                        #
+                                                    <th class="per30">
+                                                        
                                                     </th>
                                                     <th class="per40">Descripcion</th>
                                                     <th class="per40">Direccion</th>                                                    
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        1
-                                                    </td>
-                                                    <td>Jacob Olsen</td>
-                                                    <td>Developer</td>                                                    
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        2
-                                                    </td>
-                                                    <td>Lara James</td>
-                                                    <td>SEO</td>                                                    
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        3
-                                                    </td>
-                                                    <td>Steve Sidwell</td>
-                                                    <td>Photographer</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        4
-                                                    </td>
-                                                    <td>Elena Dobrev</td>
-                                                    <td>Project manger</td>
-                                                </tr>
+                                            <tbody>                                                
                                             </tbody>
                                         </table>
                                     </div>
@@ -283,8 +259,7 @@
                                                     <th class="per40">Correo</th>                                                    
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                                
+                                            <tbody>                                                
                                             </tbody>
                                         </table>
                                     </div>

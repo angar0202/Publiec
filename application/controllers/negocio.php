@@ -31,7 +31,7 @@ class Negocio extends CI_Controller {
 			}
 			else
 			{
-				$main["plugins"]=$this->load->view($this->views->MAPAS,null,true);
+				$main["plugins"]="";//$this->load->view($this->views->MAPAS,null,true);
 			}	
 			$this->load->view($this->views->MAIN,$main);
 		}
@@ -61,7 +61,7 @@ class Negocio extends CI_Controller {
 			}
 			else
 			{
-				$main["plugins"]=$this->load->view($this->views->MAPAS,null,true);
+				$main["plugins"]="";//$this->load->view($this->views->MAPAS,null,true);
 			}
 			$this->load->view($this->views->MAIN,$main);
 		}

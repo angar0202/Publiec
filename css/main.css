@@ -3150,6 +3150,36 @@ fieldset[disabled] .pricing-table.yellow .pricing-bottom .price .btn.active {
 .recent-comments li p {
   margin-top: 2px;
 }
+/*------------------------------------------
+Imagenes Negocio
+------------------------------------------*/
+div.negocio-upload {
+  overflow: hidden;
+  position: relative;
+}
+div.negocio-upload .dropzone {
+  /*height: 150px;*/
+  min-height: 150px;
+  border: 3px dashed #e3e3e3;
+}
+div.negocio-upload .dropzone .dz-message {
+  background: none;
+}
+div.negocio-upload .dropzone .dz-message:after {
+  content: "\f093";
+  top: 50%;
+  height: 50px;
+  font-size: 64px;
+  left: 50%;
+  width: 64px;
+  height: 64px;
+  position: absolute;
+  font-family: FontAwesome;
+  margin-left: -32px;
+  margin-top: -45px;
+  color: #777777;
+}
+
 /* -----------------------------------------
    Gallery page
 ----------------------------------------- */

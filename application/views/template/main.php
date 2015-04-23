@@ -90,6 +90,7 @@
         <script src="<?=site_url()?>plugins/ui/title-notifier/title_notifier.js"></script>
         <script src="<?=site_url()?>plugins/ui/notify/jquery.gritter.js"></script>
         <script src="<?=site_url()?>plugins/ui/bootstrap-sweetalert/sweet-alert.js"></script>
+        <script src="<?=site_url()?>plugins/misc/gmaps/gmaps.js"></script>
         <!--<script src="<?=$url?>js/pages/maps-google.js"></script>-->
         <script src="<?=$url?>js/pages/custom/general.js"></script>
 
@@ -98,5 +99,7 @@
         <script src="<?=$url?>js/pages/custom/registro.js"></script>
         <script src="<?=$url?>js/pages/custom/login.js"></script>
         <script src="<?=$url?>js/pages/custom/contacto.js"></script>
+        <script src="<?=$url?>js/pages/custom/ubicacion.js"></script>
+        <script src="<?=$url?>js/pages/custom/imagenes.js"></script>
     </body>
 </html>
