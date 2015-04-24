@@ -29,7 +29,8 @@ class Home extends CI_Controller {
 		
 		if($isLogin)
 		{
-			$control["panel_usuario"]="";//$this->load->view($this->views->PANEL_USUARIO,null,true);
+			$usr["nombreUsuario"]=$this->session->userdata('fullname');
+			$control["panel_usuario"]=$this->load->view($this->views->PANEL_USUARIO,$usr,true);
 			if($isAdmin)
 			{
 				$menu["menu_administrador"]=$this->load->view($this->views->MENU_ADMINISTRADOR,null,true);	
@@ -61,11 +62,13 @@ class Home extends CI_Controller {
 		$sections["container"]=$this->load->view($this->views->HOME_INDEX,$info,true);
 		$sections["container"].=$this->load->view($this->views->REGISTRO,null,true); // Se agrega pantalla modal de REgistro de Usuario
 		$sections["container"].=$this->load->view($this->views->LOGIN,null,true); // Se agrega pantalla modal de LOGIN de Usuario
+		$sections["container"].=$this->load->view($this->views->RECORDAR,null,true); // Se agrega pantalla modal de RECORDAR de Usuario
 
 		$main["body"]=$this->load->view($this->views->CONTAINER,$sections,true);
 
 		if($isLogin==false){
-			$main["plugins"]=$this->load->view($this->views->VENTANA_MODALES,null,true);
+			$main["plugins"]=$this->load->view($this->views->MAPAS,null,true);
+			$main["plugins"].=$this->load->view($this->views->VENTANA_MODALES,null,true);
 		}else{
 			$main["plugins"]=$this->load->view($this->views->MAPAS,null,true);
 		}

@@ -59,7 +59,7 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="login.html">
+                        <a href="#" id="logout">
                             <i class="fa fa-power-off"></i>
                             <span class="sr-only">Logout</span>
                         </a>

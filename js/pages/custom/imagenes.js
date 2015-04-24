@@ -21,9 +21,11 @@ $(document).ready(function() {
                 });              
               myDropzone.on("addedfile", function(file) {
                   file.previewElement.addEventListener("click", function() {
-                    if (confirm('¿Desea remover este archivo?')) {
-                        myDropzone.removeFile(file);
-                    }
+                    bootbox.confirm("¿Desea remover este archivo?", function(result) {
+                        if(result==true){
+                          myDropzone.removeFile(file);
+                        }
+                    });
                   });
                 });
 });

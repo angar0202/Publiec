@@ -52,7 +52,7 @@ class Common {
 		    $config['smtp_timeout'] = '7';
 		    $config['smtp_user']    = 'mail.factura.2014@gmail.com';
 		    $config['smtp_pass']    = 'factura2014';
-		    $config['charset']    = 'iso-8859-1';
+		    $config['charset']    = 'utf-8';
 		    $config['newline']    = "\r\n";
 		    $config['mailtype'] = 'html'; // or html
 		    $config['validation'] = TRUE; // bool whether to validate email or not 

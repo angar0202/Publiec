@@ -41,6 +41,7 @@ class Views {
 	*/
 	public $LOGIN='modal/login';
 	public $REGISTRO='modal/registro';
+	public $RECORDAR='modal/recordar';
 
 	/**
 	PLUGINS (Javascript)

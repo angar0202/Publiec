@@ -5,7 +5,7 @@
                         <!-- / .sidebar-panel -->
                         <div class="user-info clearfix">
                             <img src="<?=site_url()?>img/avatars/128.png" alt="avatar">
-                            <span class="name">Administrador</span>
+                            <span class="name"><?=$nombreUsuario?></span>
                             <div class="btn-group">
                                 <button type="button" class="btn btn-default btn-xs"><i class="l-basic-gear"></i>
                                 </button>

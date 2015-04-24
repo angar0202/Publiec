@@ -16,7 +16,7 @@
                             <div class="panel panel-default plain mb0">
                                 <div class="panel-body">
                                 <form>
-                                    <input type="text" class="form-control" data-toggle="tooltip" data-placement="top" title="" data-original-title="Presione <enter> para búscar"/>    
+                                    <input type="text" id="direccion" class="form-control" data-toggle="tooltip" data-placement="top" title="" data-original-title="Presione <enter> para búscar"/>    
                                 </form>
                                 </div>
                                 </div>

@@ -6,31 +6,48 @@ class UsuarioModel extends MasterModel {
         parent::__construct();
         $this->table="Usuario";
         $this->primaryKey="UsuarioID";
+        $this->load->model('ValidacionModel','Validacion');   
     }
     
     public function createUsuario()
 	{
 		$mensaje="Ocurrio un problema al registrar el usuario.";
-		$nombreUsuario=$this->input->post('usuario');
+		$nombreUsuario=trim($this->input->post('usuario'));
+		$email=trim($this->input->post('email'));
 		if(trim($nombreUsuario)==""){
 			$mensaje="Campo de Usuario esta vacio";
 		}elseif(trim($this->input->post('password'))==""){
 			$mensaje="Campo de contraseña esta vacio";
-		}elseif(trim($this->input->post('email'))==""){
+		}elseif($email==""){
 			$mensaje="Campo de email esta vacio";
 		}elseif(trim($this->input->post('nombre'))==""){
 			$mensaje="Campo del Nombre Completo esta vacio";
 		}else{
 			$encontrado=$this->getCount("LOWER(NombreUsuario)=LOWER('$nombreUsuario')");
 			if($encontrado==0){
-				$data = array(
-					'NombreUsuario' =>  $this->input->post('usuario'),
-					'Password' =>  md5($this->input->post('password')),
-					'Email' => $this->input->post('email'),
-					'NombreCompleto' => $this->input->post('nombre')
-					);
-				$this->create($data);
-				$mensaje="Se creo al usuario correctamente";		
+				$encontrado=$this->getCount("LOWER(Email)=LOWER('$email')");
+				if($encontrado==0){
+					$data = array(
+						'NombreUsuario' =>  $this->input->post('usuario'),
+						'Password' =>  md5($this->input->post('password')),
+						'Email' => $this->input->post('email'),
+						'NombreCompleto' => $this->input->post('nombre')
+						);
+					$this->create($data);
+					$mensaje="Se creo al usuario correctamente";
+					$where = array('NombreUsuario' => $nombreUsuario);
+					$usuario=$this->first($where);
+					$codigo=$this->common->GenerarCodigo();
+					$this->Validacion->CrearActivacion($usuario->UsuarioID,$codigo);			
+					$data["TITULO"]="ACTIVACION DE CUENTA";
+					$param["codigo"]=$codigo;
+					$data["CONTENIDO"]=$this->load->view("email/ActivarCuenta",$param,true);
+					$html=$this->load->view("email/Plantilla",$data,true);
+					$resultado=$this->common->EnviarCorreo($usuario->Email,"Registro de cuenta de usuario",$html);
+				}
+				else{
+				$mensaje="El correo ingresado ya se encuentra registrado";
+				}
 			}else{
 				$mensaje="El usuario ya existe, escriba otro nommbre de usuario";
 			}
@@ -69,7 +86,27 @@ class UsuarioModel extends MasterModel {
 	public function login(){
 		$nombreUsuario=$this->input->post('usuarioLogin');
 		$password=trim($this->input->post('passwordLogin'));
-		$where= array('NombreUsuario' =>  strtolower($nombreUsuario) ,'Password'=> md5($password));
+		$where= array('NombreUsuario' =>  strtolower($nombreUsuario) ,'Password'=> md5($password), 'Activo'=> 1);
 		return $this->first($where);
 	}
+
+	function updatePassword($password,$id_usuario='')
+    {
+        $data = array(
+            'Password' => md5($password),            
+        );
+        if($id_usuario==""){
+            $CI =& get_instance();
+            $id_usuario = $CI->session->userdata('id_usuario');
+        }
+        $this->db->update($this->table, $data, array('UsuarioID' => $id_usuario));
+    }
+
+    function updateActivo($activo,$id_usuario)
+    {
+        $data = array(
+            'Activo' => $activo,            
+        );
+        $this->db->update($this->table, $data, array('UsuarioID' => $id_usuario));
+    }
 }

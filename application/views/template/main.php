@@ -6,7 +6,7 @@
 <html class="no-js">
     <head>
         <meta charset="utf-8">
-        <title>Appname | Publicación y Búsqueda de Negocio</title>
+        <title>PUBLIEC | Publicación y Búsqueda de Negocio</title>
         <!-- Mobile specific metas -->
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1 user-scalable=no">
         <!-- Force IE9 to render in normal mode -->
@@ -99,8 +99,10 @@
         <script src="<?=$url?>js/pages/custom/general.js"></script>
 
         <?=$plugins?>        
-        <script src="<?=$url?>js/pages/forms-advanced.js"></script>
+        <!--<script src="<?=$url?>js/pages/forms-advanced.js"></script>-->
+        <script src="<?=$url?>js/pages/custom/negocio.js"></script>
         <script src="<?=$url?>js/pages/custom/registro.js"></script>
+        <script src="<?=$url?>js/pages/custom/recordar.js"></script>
         <script src="<?=$url?>js/pages/custom/login.js"></script>
         <script src="<?=$url?>js/pages/custom/contacto.js"></script>
         <script src="<?=$url?>js/pages/custom/ubicacion.js"></script>

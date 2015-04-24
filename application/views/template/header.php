@@ -4,7 +4,7 @@
         <!-- .page-navbar -->
         <div id="header" class="page-navbar">
             <!-- .navbar-brand -->
-            <a href="index.html" class="navbar-brand hidden-xs hidden-sm">
+            <a href="<?=site_url()?>" class="navbar-brand hidden-xs hidden-sm">
                 <!--<img src="<?=site_url()?>img/logo.png" class="logo hidden-xs" alt="Dynamic logo">
                 <img src="<?=site_url()?>img/logosm.png" class="logo-sm hidden-lg hidden-md" alt="Dynamic logo">-->
                 <span class="reset-layout tipB"></span><h3 style="color:white;">publiec</h3>

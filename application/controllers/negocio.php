@@ -17,7 +17,8 @@ class Negocio extends CI_Controller {
 		{
 			$top["panel_superior"]="";//$this->load->view($this->views->PANEL_SUPERIOR,null,true);
 			$sections["header"]=$this->load->view($this->views->HEADER,$top,true);
-			$control["panel_usuario"]="";//$this->load->view($this->views->PANEL_USUARIO,null,true);
+			$usr["nombreUsuario"]=$this->session->userdata('fullname');
+			$control["panel_usuario"]=$this->load->view($this->views->PANEL_USUARIO,$usr,true);
 			$menu["menu_administrador"]="";
 			$control["menu_usuario"]=$this->load->view($this->views->MENU_USUARIO,$menu,true);
 			$sections["menu"]=$this->load->view($this->views->MENU,$control,true);
@@ -47,7 +48,8 @@ class Negocio extends CI_Controller {
 		{
 			$top["panel_superior"]=$this->load->view($this->views->PANEL_SUPERIOR,null,true);
 			$sections["header"]=$this->load->view($this->views->HEADER,$top,true);
-			$control["panel_usuario"]=$this->load->view($this->views->PANEL_USUARIO,null,true);
+			$usr["nombreUsuario"]=$this->session->userdata('fullname');
+			$control["panel_usuario"]=$this->load->view($this->views->PANEL_USUARIO,$usr,true);
 			$menu["menu_administrador"]="";
 			$control["menu_usuario"]=$this->load->view($this->views->MENU_USUARIO,$menu,true);
 			$sections["menu"]=$this->load->view($this->views->MENU,$control,true);

@@ -1,40 +1,33 @@
 $(document).ready(function() {
 
-   $( "#usuarioLogin" ).keydown(function( event ) {
+   $( "#emailUserRemember" ).keydown(function( event ) {
       if ( event.which == 13 ) {
-      	$( "#passwordLogin" ).focus();
+      	$( "#recordar" ).click();
       	event.preventDefault();
       }
   });
 
-   $( "#passwordLogin" ).keydown(function( event ) {
-      if ( event.which == 13 ) {
-      	$( "#login" ).click();
-      	event.preventDefault();
-      }
-  });
-
-		    $("#login").click(function()
+		    $("#recordar").click(function()
 		    {
 		    var base_url = baseURL();//window.location.origin+'/Publiec/';
+		    var usuario=$("#emailUserRemember").val();
 		    $.ajax({
 		         type: "POST",
-		         url: base_url + "usuario/login", 
+		         url: base_url + "usuario/recordar", 
 		         data: {
-		    		usuarioLogin: $("#usuarioLogin").val(),		    	
-					passwordLogin: $("#passwordLogin").val()				
+		    		emailUserRemember: usuario
 		    	 },
 		         dataType: "text",  
 		         cache:false,
 		         success: 
 		              function(data){
-		                var info=$.parseJSON(data);
+		              	var info=$.parseJSON(data);
 		                var className='error-notice';
 		                if(info.resultado==true){
 		                	className='success-notice';
 		                }
 		                $.gritter.add({
-							title: 'Iniciar Sesión',
+							title: 'Recordar Contraseña',
 							text: info.mensaje,
 							time: '',
 							close_icon: 'l-arrows-remove s16',
@@ -42,25 +35,17 @@ $(document).ready(function() {
 							class_name: className
 						});
 						if(info.resultado==true){
-							$("#LoginModal").modal('hide');
-							clear();					
-							window.location.replace(base_url);		
+							swal("Recordar Contraseña", info.mensaje, "success");
+							$("#RememberModal").modal('hide');
+							clear();								
 						}
 		              }
 		          });// you have missed this bracket
 		     return false;
 		 });
 
-		$("#IrRecordar").click(function()
-		{
-			$("#LoginModal").modal('hide');
-			clear();
-			$("#RememberModal").modal('show');
-		});
-
 		function clear(){
-		    	$("#usuarioLogin").val('');
-		    	$("#passwordLogin").val('');
+		    	$("#emailUserRemember").val('');		    	
 		}
 	});
 function baseURL(){

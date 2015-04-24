@@ -15,7 +15,7 @@ class Registro extends CI_Controller {
 		if(!$isLogin){
 			$mensaje=$this->Usuario->createUsuario();
 			$flag=false;
-			if (strpos($mensaje,'correctamente') !== false) {
+			if (strpos($mensaje,'correctamente') !== false) {				
 			    $flag=true;
 			}
 			$mensaje=json_encode(array('mensaje' => $mensaje,'resultado'=>$flag));

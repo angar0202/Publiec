@@ -19,56 +19,55 @@ class ValidacionModel extends CI_Model {
     
     function GetById($id){
         $obj= new ValidacionModel();
-        $result = $this->db->query("SELECT * FROM $this->_table WHERE id_validacion='$id'");
+        $result = $this->db->query("SELECT * FROM $this->_table WHERE ValidacionID='$id'");
         $r=$result->row();
         
-        $obj->id_validacion=$r->id_validacion;
-        $obj->id_usuario=$r->id_usuario;
-        $obj->fecha_creacion=$r->fecha_creacion;
-        $obj->fecha_modificacion=$r->fecha_modificacion;
-        $obj->codigo_secreto=$r->codigo_secreto;
-        $obj->tipo=$r->tipo;
-        $obj->estado=$r->estado;
-        $obj->valores=$r->valores;
+        $obj->id_validacion=$r->ValidacionID;
+        $obj->id_usuario=$r->UsuarioID;
+        $obj->fecha_creacion=$r->FechaCreacion;
+        $obj->fecha_modificacion=$r->FechaModificacion;
+        $obj->codigo_secreto=$r->CodigoSecreto;
+        $obj->tipo=$r->Tipo;
+        $obj->estado=$r->Estado;
+        $obj->valores=$r->Valores;
         
         return $obj;
     }
 
     function GetByCodigo($codigo){
         $obj= new ValidacionModel();
-        $result = $this->db->query("SELECT * FROM $this->_table WHERE codigo_secreto='$codigo'");
+        $result = $this->db->query("SELECT * FROM $this->_table WHERE CodigoSecreto='$codigo'");
         foreach ($result->result() as $r)
         {
-        $obj->id_validacion=$r->id_validacion;
-        $obj->id_usuario=$r->id_usuario;
-        $obj->fecha_creacion=$r->fecha_creacion;
-        $obj->fecha_modificacion=$r->fecha_modificacion;
-        $obj->codigo_secreto=$r->codigo_secreto;
-        $obj->tipo=$r->tipo;
-        $obj->estado=$r->estado;
-        $obj->valores=$r->valores;        
+        $obj->id_validacion=$r->ValidacionID;
+        $obj->id_usuario=$r->UsuarioID;
+        $obj->fecha_creacion=$r->FechaCreacion;
+        $obj->fecha_modificacion=$r->FechaModificacion;
+        $obj->codigo_secreto=$r->CodigoSecreto;
+        $obj->tipo=$r->Tipo;
+        $obj->estado=$r->Estado;
+        $obj->valores=$r->Valores;
         return $obj;
         }
         return null;
     }
 
-    function CrearActivacion($id_usuario,$codigo,$id_cliente,$tipo='ACTIVACION_CUENTA'){
+    function CrearActivacion($id_usuario,$codigo,$tipo='ACTIVACION_CUENTA'){
         $data = array(
-            'id_usuario' => $id_usuario ,            
-            'fecha_modificacion' => date('Y-m-d H:i:s'),
-            'codigo_secreto' => $codigo,
-            'tipo' => $tipo,
-            'valores' => $id_cliente,            
+            'UsuarioID' => $id_usuario ,            
+            'FechaModificacion' => date('Y-m-d H:i:s'),
+            'CodigoSecreto' => $codigo,
+            'Tipo' => $tipo,          
         );
         $this->db->insert($this->_table, $data);
     }
 
     function CrearRecordarPassword($id_usuario,$codigo,$tipo='RECORDAR_PASSWORD'){
         $data = array(
-            'id_usuario' => $id_usuario ,            
-            'fecha_modificacion' => date('Y-m-d H:i:s'),
-            'codigo_secreto' => $codigo,
-            'tipo' => $tipo,            
+            'UsuarioID' => $id_usuario ,            
+            'FechaModificacion' => date('Y-m-d H:i:s'),
+            'CodigoSecreto' => $codigo,
+            'Tipo' => $tipo,            
         );
         $this->db->insert($this->_table, $data);
     }
@@ -79,10 +78,10 @@ class ValidacionModel extends CI_Model {
        if($validacion!==null){
             if($validacion->estado==1){
                 $data = array(
-                    'fecha_modificacion' =>  date('Y-m-d H:i:s'),
-                    'estado' => 0,
+                    'FechaModificacion' =>  date('Y-m-d H:i:s'),
+                    'Estado' => 0,
                 );
-                $this->db->update($this->_table, $data, array('id_validacion' => $validacion->id_validacion));
+                $this->db->update($this->_table, $data, array('ValidacionID' => $validacion->id_validacion));
                 $u=$this->Usuario->GetById($validacion->id_usuario);
                 return $u;
            }
@@ -95,10 +94,10 @@ class ValidacionModel extends CI_Model {
        $validacion= $this->GetByCodigo($codigo);
        if($validacion->estado==1){
             $data = array(
-                'fecha_modificacion' =>  date('Y-m-d H:i:s'),
-                'estado' => 0,
+                'FechaModificacion' =>  date('Y-m-d H:i:s'),
+                'Estado' => 0,
             );
-            $this->db->update($this->_table, $data, array('id_validacion' => $validacion->id_validacion));
+            $this->db->update($this->_table, $data, array('ValidacionID' => $validacion->id_validacion));
        }
     }
 
