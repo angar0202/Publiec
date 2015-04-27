@@ -12,7 +12,7 @@
                                 <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">opciones <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu right" role="menu">
-                                    <li><a href="profile.html"><i class="fa fa-edit"></i>Editar Perfil</a>
+                                    <li><a href="<?=base_url()?>usuario/perfil"><i class="fa fa-edit"></i>Editar Perfil</a>
                                     </li>
                                     <li class="divider"></li>
                                     <li><a href="#" id="logout"><i class="fa fa-power-off"></i>Cerrar Sesión</a>

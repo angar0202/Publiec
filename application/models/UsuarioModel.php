@@ -5,14 +5,13 @@ class UsuarioModel extends MasterModel {
         // Call the Model constructor
         parent::__construct();
         $this->table="Usuario";
-        $this->primaryKey="UsuarioID";
-        $this->load->model('ValidacionModel','Validacion');   
+        $this->primaryKey="UsuarioID";        
     }
     
     public function createUsuario()
 	{
 		$mensaje="Ocurrio un problema al registrar el usuario.";
-		$nombreUsuario=trim($this->input->post('usuario'));
+		$nombreUsuario=trim(strtolower($this->input->post('usuario')));
 		$email=trim($this->input->post('email'));
 		if(trim($nombreUsuario)==""){
 			$mensaje="Campo de Usuario esta vacio";
@@ -28,7 +27,7 @@ class UsuarioModel extends MasterModel {
 				$encontrado=$this->getCount("LOWER(Email)=LOWER('$email')");
 				if($encontrado==0){
 					$data = array(
-						'NombreUsuario' =>  $this->input->post('usuario'),
+						'NombreUsuario' =>  $nombreUsuario,//$this->input->post('usuario'),
 						'Password' =>  md5($this->input->post('password')),
 						'Email' => $this->input->post('email'),
 						'NombreCompleto' => $this->input->post('nombre')
@@ -38,7 +37,7 @@ class UsuarioModel extends MasterModel {
 					$where = array('NombreUsuario' => $nombreUsuario);
 					$usuario=$this->first($where);
 					$codigo=$this->common->GenerarCodigo();
-					$this->Validacion->CrearActivacion($usuario->UsuarioID,$codigo);			
+					$this->ValidacionModel->CrearActivacion($usuario->UsuarioID,$codigo);			
 					$data["TITULO"]="ACTIVACION DE CUENTA";
 					$param["codigo"]=$codigo;
 					$data["CONTENIDO"]=$this->load->view("email/ActivarCuenta",$param,true);

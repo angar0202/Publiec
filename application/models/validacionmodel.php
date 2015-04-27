@@ -98,7 +98,10 @@ class ValidacionModel extends CI_Model {
                 'Estado' => 0,
             );
             $this->db->update($this->_table, $data, array('ValidacionID' => $validacion->id_validacion));
+            $u=$this->Usuario->GetById($validacion->id_usuario);
+            return $u;
        }
+       return "-1";
     }
 
 

@@ -6,7 +6,7 @@ class validacion extends CI_Controller {
     {
         // Call the Model constructor
         parent::__construct();
-        $this->load->model('ValidacionModel','Validacion');                    
+        $this->load->model('ValidacionModel','Validacion');
         $this->load->model('UsuarioModel','Usuario');        
     }
 
@@ -15,6 +15,12 @@ class validacion extends CI_Controller {
 		redirect('/home/','refresh');
 	}
 
+	public function template(){
+		$param["TITULO"]="<br><br>ACTIVACION DE CUENTA DE USUARIO";
+		$param["CONTENIDO"]="<p> Presione para confirmar su registro <br><br><a href='#' class='link'>click aqui para confirmar</a></p>";
+		$this->load->view("email/plantilla",$param);	
+	}
+	
 	public function registro($codigo){
 		if(!$this->common->isLogin()){
 			$usuario=$this->Validacion->ActualizarActivacion($codigo);

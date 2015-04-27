@@ -58,7 +58,7 @@ class Common {
 		    $config['validation'] = TRUE; // bool whether to validate email or not 
 		    $CI =& get_instance();
 			$CI->load->library('email', $config);	
-		    $CI->email->from('mail.facturacion@einvoice.com', 'Test');
+		    $CI->email->from('mail.facturacion@einvoice.com', 'Notificacion Publiec');
 		    $CI->email->to($to);
 		    $CI->email->subject($subject);
 		    $CI->email->message($body);
