@@ -41,5 +41,4 @@ class CategoriaModel extends MasterModel {
             $this->create($data);    
         }
     }
-
 }

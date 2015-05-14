@@ -6,8 +6,8 @@ class Negocio extends CI_Controller {
     {
         // Call the Model constructor
         parent::__construct();
-        $this->load->model('TipoNegocioModel','TipoNegocio');
-        $this->load->model('CategoriaModel','Categoria');        
+        $this->load->model('TipoNegocioModel');
+        $this->load->model('CategoriaModel');        
     }
 
 	public function index()
@@ -55,7 +55,9 @@ class Negocio extends CI_Controller {
 			$sections["menu"]=$this->load->view($this->views->MENU,$control,true);
 			$sections["publicaciones"]=$this->load->view($this->views->ACTIVIDAD_NEGOCIOS,null,true);		
 			$info["info_negocio"]=$this->load->view($this->views->INFO_NEGOCIO,null,true);
-			$sections["container"]=$this->load->view($this->views->NEGOCIO_CREATE,null,true);
+			$data["tiposNegocios"]=$this->TipoNegocioModel->GetAll();
+			$data["categorias"]=$this->CategoriaModel->GetAll();
+			$sections["container"]=$this->load->view($this->views->NEGOCIO_CREATE,$data,true);
 			$main["body"]=$this->load->view($this->views->CONTAINER,$sections,true);
 			if($isLogin==false)
 			{
@@ -72,4 +74,5 @@ class Negocio extends CI_Controller {
 			redirect('home','refresh'); 
 		}
 	}
+
 }

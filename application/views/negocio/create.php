@@ -54,21 +54,28 @@
                                                 </div>
                                                 <!-- End .form-group  -->
                                                 <div class="form-group">
-                                                <label class="col-lg-2 col-md-3 control-label" for="">Categorias</label>
-                                                <div class="col-lg-10 col-md-9">
-                                                    <select class="form-control select2" multiple>
-                                                        <optgroup label="Informatica">
-                                                            <option value="AK">Venta de equipos de computo</option>
-                                                            <option value="HI">Desarrollo de Software</option>
+                                                    <label class="col-lg-2 col-md-3 control-label" for="">Categorias</label>
+                                                    <div class="col-lg-10 col-md-9">
+                                                        <select class="form-control select2" id="categorias" multiple>
+                                                        <?
+                                                        foreach ($tiposNegocios as $tipo) {
+                                                        ?>
+                                                        <optgroup label="<?=$tipo->Nombre?>">
+                                                            <?
+                                                            foreach ($categorias as $item) {
+                                                                if($item->TipoNegocioID==$tipo->TipoNegocioID){
+                                                            ?>
+                                                                <option value="<?=$item->TipoNegocioID?>_<?=$item->CategoriaID?>"><?=$item->Nombre?></option>
+                                                            <?
+                                                                }
+                                                            }
+                                                            ?>
                                                         </optgroup>
-                                                        <optgroup label="Comida">
-                                                            <option value="CA">Comida Rapida</option>
-                                                            <option value="NV">Comida Italiana</option>
-                                                            <option value="OR">Mariscos</option>
-                                                            <option value="WA">Pizzeria</option>
-                                                        </optgroup>
-                                                    </select>
-                                                </div>
+                                                        <?
+                                                        }
+                                                        ?>
+                                                        </select>
+                                                    </div>
                                             </div>
                                             <!-- End .form-group  -->
                                             </form>

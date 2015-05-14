@@ -14,8 +14,8 @@ class MasterModel extends CI_Model {
     }
 
     function GetAll(){
-        $result = $this->db->query("SELECT * FROM $this->table");$result = $this->db->query("SELECT * FROM $this->table");
-        return $result->row();
+        $query = $this->db->query("SELECT * FROM $this->table");$result = $this->db->query("SELECT * FROM $this->table");
+        return $query->result();
     }
 
     function First($where){        
