@@ -99,13 +99,13 @@
 
         <?=$plugins?>        
         <script src="<?=$url?>js/pages/custom/perfil.js"></script>
+        <script src="<?=$url?>js/pages/custom/contacto.js"></script>
+        <script src="<?=$url?>js/pages/custom/ubicacion.js"></script>
+        <script src="<?=$url?>js/pages/custom/imagenes.js"></script>
         <script src="<?=$url?>js/pages/custom/negocio.js"></script>
         <script src="<?=$url?>js/pages/custom/registro.js"></script>
         <script src="<?=$url?>js/pages/custom/recordar.js"></script>
         <script src="<?=$url?>js/pages/custom/login.js"></script>
-        <script src="<?=$url?>js/pages/custom/contacto.js"></script>
-        <script src="<?=$url?>js/pages/custom/ubicacion.js"></script>
-        <script src="<?=$url?>js/pages/custom/imagenes.js"></script>
         
     </body>
 </html>
