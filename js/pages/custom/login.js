@@ -14,9 +14,10 @@ $(document).ready(function() {
       }
   });
 
-		    $("#login").click(function()
-		    {
+		$("#login").click(function()
+		{
 		    var base_url = baseURL();//window.location.origin+'/Publiec/';
+		    alert("asdsd");
 		    $.ajax({
 		         type: "POST",
 		         url: base_url + "usuario/login", 
@@ -49,7 +50,7 @@ $(document).ready(function() {
 		              }
 		          });// you have missed this bracket
 		     return false;
-		 });
+		});
 
 		$("#IrRecordar").click(function()
 		{

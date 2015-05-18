@@ -16,7 +16,7 @@
                             </ul>
                             <div id="rstab-content" class="tab-content">
                                 <div class="tab-pane fade active in" id="activity">
-                                    <ul class="timeline timeline-icons timeline-sm">
+                                    <!--<ul class="timeline timeline-icons timeline-sm">
                                         <li>
                                             <p>
                                                 <a href="#">Mi Ferreteria</a>: para este feriado vamos a atender con normalidad
@@ -59,7 +59,7 @@
                                                 <span class="timeline-date">Marzo 29, 15:40</span>
                                             </p>
                                         </li>
-                                    </ul>
+                                    </ul>-->
                                 </div>
                                 <div class="tab-pane fade" id="users">
                                     <div class="chat-user-list">
@@ -74,7 +74,7 @@
                                             </div>
                                             <!-- End .form-group  -->
                                         </form>
-                                        <ul class="user-list list-group">
+                                        <!--<ul class="user-list list-group">
                                             <li class="list-group-item clearfix">
                                                 <a href="#">
                                                     <img src="http://www.emerkusa.com.ar/imagenes/ferreteria.jpg" alt="avatar" class="avatar">
@@ -138,7 +138,7 @@
                                                     <span class="status status-online">online</span>
                                                 </a>
                                             </li>
-                                        </ul>
+                                        </ul>-->
                                         <div id="chat-write">
                                             <form id="chat-write-form" class="form-vertical" role="form">
                                                 <div class="form-group mb5">

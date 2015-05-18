@@ -89,21 +89,17 @@
         <script src="<?=$url?>plugins/forms/bootstrap-markdown/bootstrap-markdown.js"></script>
         <!--Aqui va el js de mapas-->
         <script src="<?=$url?>js/jquery.dynamic.js"></script>
-        <script src="<?=$url?>js/main.js"></script>
-                
+        <script src="<?=$url?>js/main.js"></script>                
         <script src="<?=site_url()?>plugins/ui/title-notifier/title_notifier.js"></script>
         <script src="<?=site_url()?>plugins/ui/notify/jquery.gritter.js"></script>
         <script src="<?=site_url()?>plugins/ui/bootstrap-sweetalert/sweet-alert.js"></script>
         <script src="<?=site_url()?>plugins/misc/gmaps/gmaps.js"></script>
         <script src="<?=$url?>js/pages/custom/general.js"></script>
 
-        <?=$plugins?>        
+        <?=$plugins?>
         <script src="<?=$url?>js/pages/custom/perfil.js"></script>
-        <script src="<?=$url?>js/pages/custom/imagenes.js"></script>
-        <script src="<?=$url?>js/pages/custom/negocio.js"></script>
         <script src="<?=$url?>js/pages/custom/registro.js"></script>
         <script src="<?=$url?>js/pages/custom/recordar.js"></script>
         <script src="<?=$url?>js/pages/custom/login.js"></script>
-        
     </body>
 </html>

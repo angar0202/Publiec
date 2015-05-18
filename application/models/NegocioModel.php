@@ -7,6 +7,47 @@ class NegocioModel extends MasterModel {
         $this->table="Negocio";
         $this->primaryKey="NegocioID";
     }
+
+    public function crearNegocio($negocio){
+        $cantidad=$this->GetCount("lower(Nombre)='$negocio->nombre'");
+			if($cantidad==0){
+				$this->db->trans_start();				
+			       /*Negocio*/
+			       $data = array(
+			       'UsuarioID'=> $this->session->userdata("id_usuario"),
+				   'Nombre' => $negocio->nombre ,
+				   'Descripcion' => $negocio->descripcion ,
+				   'Email' => $negocio->email,
+				   'Telefono' => $negocio->telefono
+					);
+				   $this->db->insert('negocio',$data);
+				   $negocio_id = $this->db->insert_id();
+				   /*Ubicaciones del Negocio*/
+				   foreach ($negocio->ubicaciones as $u) {
+					   $data = array(
+					   'NegocioID' => $negocio_id ,
+					   'Direccion' => $u->direccion ,
+					   'Descripcion' => $u->descripcion ,
+					   'Latitud' => $u->latitud,
+					   'Longitud' => $u->longitud
+						);
+					   $this->db->insert('negocioubicacion',$data);
+				   }
+				   $this->db->trans_complete();
+				   if ($this->db->trans_status() === FALSE)
+				   {
+					    $mensaje="No se pudo crear el Negccio";
+				   }else{
+				   		$mensaje="Se creo el negocio correctamente";
+				   }
+			}
+			else
+			{
+				$mensaje="Este negocio ya se encuentra registrado";
+			}
+	   return  $mensaje;
+    }
+
     public function create()
     {
 		$usuarioID=trim($this->input->post('UsuarioID'));

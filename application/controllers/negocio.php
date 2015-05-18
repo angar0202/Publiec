@@ -7,7 +7,8 @@ class Negocio extends CI_Controller {
         // Call the Model constructor
         parent::__construct();
         $this->load->model('TipoNegocioModel');
-        $this->load->model('CategoriaModel');        
+        $this->load->model('CategoriaModel');    
+        $this->load->model('NegocioModel');
     }
 
 	public function index()
@@ -32,7 +33,7 @@ class Negocio extends CI_Controller {
 			}
 			else
 			{
-				$main["plugins"]="";//$this->load->view($this->views->MAPAS,null,true);
+				$main["plugins"]=$this->load->view("plugins/negocio",null,true);
 			}	
 			$this->load->view($this->views->MAIN,$main);
 		}
@@ -55,7 +56,7 @@ class Negocio extends CI_Controller {
 			$sections["menu"]=$this->load->view($this->views->MENU,$control,true);
 			$sections["publicaciones"]=$this->load->view($this->views->ACTIVIDAD_NEGOCIOS,null,true);		
 			$info["info_negocio"]=$this->load->view($this->views->INFO_NEGOCIO,null,true);
-			$data["tiposNegocios"]=$this->TipoNegocioModel->GetAll();
+			$data["tiposNegocios"]=$this->TipoNegocioModel->TiposNegociosCategorias();
 			$data["categorias"]=$this->CategoriaModel->GetAll();
 			$sections["container"]=$this->load->view($this->views->NEGOCIO_CREATE,$data,true);
 			$main["body"]=$this->load->view($this->views->CONTAINER,$sections,true);
@@ -65,7 +66,7 @@ class Negocio extends CI_Controller {
 			}
 			else
 			{
-				$main["plugins"]="";//$this->load->view($this->views->MAPAS,null,true);
+				$main["plugins"]=$this->load->view("plugins/negocio",null,true);
 			}
 			$this->load->view($this->views->MAIN,$main);
 		}
@@ -75,4 +76,28 @@ class Negocio extends CI_Controller {
 		}
 	}
 
+	public function nuevo(){
+		$isLogin=$this->common->isLogin();
+		if($isLogin)
+		{
+			$flag=false;
+			$negocio=$this->input->post("negocio");
+			if($negocio!=null)
+			{
+				$negocio=json_decode($this->input->post("negocio"));
+				$mensaje=$this->NegocioModel->crearNegocio($negocio);
+				if (strpos($mensaje,'correctamente') !== false) {				
+				    $flag=true;
+				}
+			}else{
+				$mensaje="No se han ingresado los valores para el nuevo negocio";
+			}
+			$mensaje=json_encode(array('mensaje' => $mensaje,'resultado'=>$flag));
+    		echo $mensaje;
+		}
+		else
+		{
+			redirect('home','refresh'); 
+		}
+	}
 }

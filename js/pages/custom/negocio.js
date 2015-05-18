@@ -1,13 +1,54 @@
 $(document).ready(function() {	
+	
+	function Negocio()
+	{
+		this.id=-1;
+		this.nombre="";
+		this.descripcion="";
+		this.email="";
+		this.telefono="";
+		this.ubicaciones=[];
+		this.contactos=[];
+	}
+
 	$('.select2').select2({placeholder: 'Seleccionar categorias'});
 
 	/*Crear negocio*/
 
 	$('#CrearNegocio').click(function(){
-		if(validar()){
-			
+		var negocio=validar();
+		if(negocio!=null){
+			$('#ubicacionesTable > tbody  > tr').each(function() {			
+				var ubicacion=getUbicacion($(this).attr('id'));
+				negocio.ubicaciones[negocio.ubicaciones.length]=ubicacion;
+			});
+			var negocioJson=JSON.stringify(negocio);
+			/*Guardar Informacion*/
+			var base_url = baseURL();
+			alert(base_url+ "negocio/nuevo");
+			alert(negocioJson);
+		    $.ajax({
+		         type: "POST",
+		         url: base_url + "negocio/nuevo", 
+		         data: {
+		    		negocio: negocioJson
+		    	 },
+		         dataType: "text",  
+		         cache:false,
+		         success: 
+		              function(data){
+		                //var info=$.parseJSON(data);
+		                //alert(info);
+		                alert(data);
+		              }
+		          });
 		}
 	});
+
+	function getUbicacion(codigo){		
+		var id = codigo.replace("ubicacion_", "");
+		return ubicaciones[id];
+	}
 
 	/*Validacion informacion negocio*/
 	function validar(){
@@ -19,21 +60,27 @@ $(document).ready(function() {
 		var categorias=$.trim($("#categorias").val());
 		if(nombre==""){
 			error("Nombre del Negocio se encuentra vacio");
-			return false;
+			$('#NegocioNombreTextbox').focus();
+			return null;
 		}else if(descripcion==""){
 			error("Descripción del Negocio se encuentra vacio");
-			return false;
+			$('#NegocioDescripcionTextbox').focus();
+			return null;
 		}else if(categorias=="" || categorias==null){
 			error("Debe de selecciona al menos una categoria");
-			return false;
+			$('#categorias').focus();
+			return null;
 		}else if(ubicaciones.length==0){
 			error("Debe ingresar una ubicacion para que su negocio se muestre en el mapa");
+			$('#UbicacionDireccionTextbox').focus();
+			return null;
 		}
-		$('#ubicacionesTable > tbody  > tr').each(function() {
-			
-		});
-
-		return true;
+		var negocio= new Negocio();
+		negocio.nombre=nombre;
+		negocio.descripcion=descripcion;
+		negocio.email=email;
+		negocio.telefono=telefono;
+		return negocio;
 	}
 
 	function error(mensaje){
@@ -377,7 +424,7 @@ $(document).ready(function() {
 		    	$('#ubicacionesTable tbody').append(fila);        
 		    }
 		    ubicaciones[ubicaciones.length]=ubicacion;
-		    clear();
+		    clearUbicacion();
         }
 
         function rowUbicacion(ubicacion){
@@ -487,4 +534,7 @@ $(document).ready(function() {
 		    }
 		  }]
 		});
+		function baseURL(){
+		  	return window.location.origin+'/Publiec/';
+		}
 });
