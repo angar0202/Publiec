@@ -91,7 +91,7 @@
                                     </div>
                                     <div class="panel-body">
                                         <div class="negocio-upload">
-                                            <form id="my-awesome-dropzone" action="<?=site_url()?>uploads" class="dropzone"></form>
+                                            <form id="my-awesome-dropzone" action="<?=site_url()?>/negocio/upload" class="dropzone"></form>
                                         </div>
                                         <div id="">
                                     </div>

@@ -24,21 +24,21 @@ class NegocioModel extends MasterModel {
 				   $negocio_id = $this->db->insert_id();
 				   /*Ubicaciones del Negocio*/
 				   foreach ($negocio->ubicaciones as $u) {
-					   $data = array(
+					   $ubicacion = array(
 					   'NegocioID' => $negocio_id ,
 					   'Direccion' => $u->direccion ,
 					   'Descripcion' => $u->descripcion ,
 					   'Latitud' => $u->latitud,
 					   'Longitud' => $u->longitud
 						);
-					   $this->db->insert('negocioubicacion',$data);
+					   $this->db->insert('negocioubicacion',$ubicacion);
 				   }
 				   $this->db->trans_complete();
 				   if ($this->db->trans_status() === FALSE)
 				   {
 					    $mensaje="No se pudo crear el Negccio";
 				   }else{
-				   		$mensaje="Se creo el negocio correctamente";
+				   		$mensaje="Se creo el negocio #$negocio_id correctamente";
 				   }
 			}
 			else
