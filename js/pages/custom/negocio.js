@@ -1,5 +1,103 @@
 $(document).ready(function() {	
-	
+	Dropzone.autoDiscover = false;
+	var imagenes=0;
+	/*Imagenes de Negocio*/
+	// Now that the DOM is fully loaded, create the dropzone, and setup the
+              // event listeners
+              var myDropzone = new Dropzone("#my-awesome-dropzone",{
+              		autoProcessQueue: false,
+                    maxFiles: 5,
+                    maxFilesize: 1,
+                    acceptedFiles: "image/*", /*is this correct?*/
+                    init: function(){
+                    	var submitButton = document.querySelector("#CrearNegocio")
+					        myDropzone = this; // closure
+
+					    submitButton.addEventListener("click", function() {
+					    	var negocio=validar();
+								if(negocio!=null){
+									$('#ubicacionesTable > tbody  > tr').each(function() {			
+										var ubicacion=getUbicacion($(this).attr('id'));
+										negocio.ubicaciones[negocio.ubicaciones.length]=ubicacion;
+									});
+									var negocioJson=JSON.stringify(negocio);
+									/*Guardar Informacion*/
+									var base_url = baseURL();
+									$.ajax({
+								         type: "POST",
+								         url: base_url + "negocio/nuevo", 
+								         data: {
+								    		negocio: negocioJson
+								    	 },
+								         dataType: "text",  
+								         cache:false,
+								         success: 
+								              function(data){
+								                var info=$.parseJSON(data);
+								                if(info.resultado==true){
+								                	correcto(info.mensaje);
+								                	myDropzone.processQueue(); // Tell Dropzone to process all queued files.								                	
+								                }else{
+								                	error(info.mensaje);
+								                }
+								              }
+								          });
+								}
+					    });
+
+                        this.on("success", function(file, data) {
+                        	correcto("Se cargo correctamente la imagen:"+file.name);
+                            });
+                        this.on("maxfilesexceeded", function(file){
+                        	imagenes--;
+                            alert("No more files please!");
+                            myDropzone.removeFile(file);
+                        });
+                        this.on("uploadprogress", function(file, progress) {
+                            console.log("File progress", progress);
+                        });    
+                        },
+                    accept: function(file, done) {
+                    	imagenes++;
+                    	done();
+                    }
+                });
+			  myDropzone.on("complete", function(file) {
+				  alert("Se completo con exito el registro");
+			  });
+              myDropzone.on("addedfile", function(file) {
+              	file.previewElement.addEventListener("click", function() {
+                    bootbox.confirm("¿Desea remover este archivo "+file.name+"?", function(result) {
+                        if(result==true){
+                          imagenes--;
+                          myDropzone.removeFile(file);
+                          RemoverImagen(file.name);
+                        }
+                    });
+                  });
+                });
+
+    function RemoverImagen(filename){
+    	alert(filename);
+    	var base_url = baseURL();
+			$.ajax({
+		         type: "POST",
+		         url: base_url + "negocio/eliminarImagen", 
+		         data: {
+		    		archivo: filename
+		    	 },
+		         dataType: "text",  
+		         cache:false,
+		         success: 
+		              function(data){
+		                console.log(data);
+		                //var info=$.parseJSON(data);
+		                //alert(info.resultado);
+		              }
+		          });
+    }
+
+
 	function Negocio()
 	{
 		this.id=-1;
@@ -15,35 +113,9 @@ $(document).ready(function() {
 
 	/*Crear negocio*/
 
-	$('#CrearNegocio').click(function(){
-		var negocio=validar();
-		if(negocio!=null){
-			$('#ubicacionesTable > tbody  > tr').each(function() {			
-				var ubicacion=getUbicacion($(this).attr('id'));
-				negocio.ubicaciones[negocio.ubicaciones.length]=ubicacion;
-			});
-			var negocioJson=JSON.stringify(negocio);
-			/*Guardar Informacion*/
-			var base_url = baseURL();
-			alert(base_url+ "negocio/nuevo");
-			alert(negocioJson);
-		    $.ajax({
-		         type: "POST",
-		         url: base_url + "negocio/nuevo", 
-		         data: {
-		    		negocio: negocioJson
-		    	 },
-		         dataType: "text",  
-		         cache:false,
-		         success: 
-		              function(data){
-		                //var info=$.parseJSON(data);
-		                //alert(info);
-		                alert(data);
-		              }
-		          });
-		}
-	});
+	/*$('#CrearNegocio').click(function(){
+		
+	});*/
 
 	function getUbicacion(codigo){		
 		var id = codigo.replace("ubicacion_", "");
@@ -74,6 +146,9 @@ $(document).ready(function() {
 			error("Debe ingresar una ubicacion para que su negocio se muestre en el mapa");
 			$('#UbicacionDireccionTextbox').focus();
 			return null;
+		}else if(imagenes==0){
+			error("El negocio debe tener al menos una imagen de identificación");
+			return null;
 		}
 		var negocio= new Negocio();
 		negocio.nombre=nombre;
@@ -94,6 +169,17 @@ $(document).ready(function() {
 						});
 	}
 	
+	function correcto(mensaje){
+		                $.gritter.add({
+							title: 'Negocio',
+							text: mensaje,
+							time: '',
+							close_icon: 'l-arrows-remove s16',
+							icon: 'glyphicon glyphicon-user',
+							class_name: 'success-notice'
+						});
+	}
+
 	/*CONTACTOS*/
 	
 	var contactos = []; 
@@ -478,7 +564,7 @@ $(document).ready(function() {
         },
         always: function(){
             $.gritter.add({
-                title: 'Listo !!!',
+                title: 'Geolocalización',
                 text: 'Su localización fue encontrada',
                 close_icon: 'en-cross',
                 icon: 'ec-location',

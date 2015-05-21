@@ -9,6 +9,7 @@ class Negocio extends CI_Controller {
         $this->load->model('TipoNegocioModel');
         $this->load->model('CategoriaModel');    
         $this->load->model('NegocioModel');
+        $this->load->helper(array('html','form'));
     }
 
 	public function index()
@@ -101,19 +102,29 @@ class Negocio extends CI_Controller {
 		}
 	}
 	public function upload(){
-    	$uploaddir = './uploads';
-$uploadfile = $uploaddir . basename($_FILES['userfile']['name']);
+    if (!empty($_FILES)) {
+		$tempFile = $_FILES['file']['tmp_name'];
+		$fileName = $_FILES['file']['name'];
+		$targetPath = getcwd() . '/uploads/temp/';
+		$targetFile = $targetPath . $fileName ;
+		move_uploaded_file($tempFile, $targetFile);
+		// if you want to save in db,where here
+		// with out model just for example
+		// $this->load->database(); // load database
+		// $this->db->insert('file_table',array('file_name' => $fileName));
+		}
+    }
 
-echo '<pre>';
-if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
-    echo "File is valid, and was successfully uploaded.\n";
-} else {
-    echo "Possible file upload attack!\n";
-}
-
-echo 'Here is some more debugging info:';
-print_r($_FILES);
-
-print "</pre>";
+public function eliminarImagen(){
+	$fileName=$this->input->post("archivo");
+	$targetPath = getcwd() . '/uploads/temp/';
+	$targetFile = $targetPath . $fileName;
+	if(file_exists($targetFile)){
+		$flag=unlink($targetFile);	
+	}else{
+		$flag=true;
 	}
+	echo json_encode(array('resultado'=>$flag));
+}
+	
 }
