@@ -14,7 +14,7 @@ class MasterModel extends CI_Model {
     }
 
     function GetAll(){
-        $query = $this->db->query("SELECT * FROM $this->table");$result = $this->db->query("SELECT * FROM $this->table");
+        $query = $this->db->query("SELECT * FROM $this->table");
         return $query->result();
     }
 
@@ -49,6 +49,7 @@ class MasterModel extends CI_Model {
 
     function Update($data){
         $vars = get_object_vars($data);
+        print_r($vars);
         $id=$vars[$this->primaryKey];
         unset($vars[$this->primaryKey]);
         $this->db->update($this->table, $vars, array($this->primaryKey => $id));

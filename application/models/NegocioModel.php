@@ -9,9 +9,10 @@ class NegocioModel extends MasterModel {
     }
 
     public function crearNegocio($negocio){
+    	$mensaje="";
         $cantidad=$this->GetCount("lower(Nombre)='$negocio->nombre'");
 			if($cantidad==0){
-				$this->db->trans_start();				
+				$this->db->trans_begin();			
 			       /*Negocio*/
 			       $data = array(
 			       'UsuarioID'=> $this->session->userdata("id_usuario"),
@@ -33,13 +34,37 @@ class NegocioModel extends MasterModel {
 						);
 					   $this->db->insert('negocioubicacion',$ubicacion);
 				   }
-				   $this->db->trans_complete();
-				   if ($this->db->trans_status() === FALSE)
+
+				   foreach ($negocio->categorias as $cat) {
+				   		$categoria_id=intval(htmlspecialchars(trim($cat->id)));
+				   		$negocio_id=intval(trim($negocio_id));
+				   		$this->db->set('NegocioID', $negocio_id);
+				   		$this->db->set('CategoriaID', $categoria_id);
+				   		$this->db->insert('negociocategoria');
+				   		$mensaje.="_id:".$negocio_id."cat".$categoria_id;				   		
+				   }
+				   
+				   foreach ($negocio->contactos as $co) {
+				   		$contacto= array(
+				   			'NegocioID' => $negocio_id,
+				   			'Nombre'=> $co->nombre,
+				   			'Apellido'=> $co->apellido,
+				   			'Telefono'=> $co->telefono,
+				   			'Email'=> $co->email,
+				   			'Direccion'=> $co->direccion
+				   		 );
+				   		//$this->db->insert('contacto',$contacto);
+				   }
+				   $mensaje.="___".$negocio_id;
+				    $this->db->trans_rollback();
+
+				   //$this->db->trans_complete();
+				   /*if ($this->db->trans_status() === FALSE)
 				   {
-					    $mensaje="No se pudo crear el Negccio";
+					    $mensaje="No se pudo crear el Negocio";
 				   }else{
 				   		$mensaje="Se creo el negocio #$negocio_id correctamente";
-				   }
+				   }*/
 			}
 			else
 			{
@@ -124,10 +149,28 @@ class NegocioModel extends MasterModel {
 	}
 	public function getByUsuario($usuarioID)
 	{		
-		return $this->GetWhere("UsuarioID=$usuarioID");
+		$sql="select *, (select count(u.NegocioID) from negocioubicacion u where u.NegocioID=n.NegocioID) as Ubicaciones from Negocio n where n.UsuarioID=$usuarioID";
+		$query = $this->db->query($sql);
+        return $query->result();
 	}
+
 	public function getCountByUsuario($usuarioID)
 	{
 		return $this->GetCount("UsuarioID=$usuarioID");
 	}
+
+	public function CambiarEstado($id,$estado){
+		$negocio=$this->GetById($id);
+			if($negocio!=null){
+				$data = array(
+					'Activo' =>  $estado
+					);
+				$this->db->update('Negocio', $data, array('NegocioID' => $id));
+				$mensaje="Negocio Desactivado";
+			}else{
+				$mensaje="Negocio no encontrado";
+			}
+			return $mensaje;
+	}
+
 }

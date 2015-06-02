@@ -1,4 +1,5 @@
 $(document).ready(function() {	
+	var negocio_id=0;
 	Dropzone.autoDiscover = false;
 	var imagenes=0;
 	/*Imagenes de Negocio*/
@@ -20,7 +21,12 @@ $(document).ready(function() {
 										var ubicacion=getUbicacion($(this).attr('id'));
 										negocio.ubicaciones[negocio.ubicaciones.length]=ubicacion;
 									});
+									$('#contactosTable > tbody > tr').each(function(){
+										var contacto=getContacto($(this).attr('id'));
+										negocio.contactos[negocio.contactos.length]=contacto;
+									});
 									var negocioJson=JSON.stringify(negocio);
+									alert(negocioJson);
 									/*Guardar Informacion*/
 									var base_url = baseURL();
 									$.ajax({
@@ -33,20 +39,24 @@ $(document).ready(function() {
 								         cache:false,
 								         success: 
 								              function(data){
-								                var info=$.parseJSON(data);
+								              	alert(data);
+								                /*var info=$.parseJSON(data);
 								                if(info.resultado==true){
+								                	negocio.id=info.negocio_id;
+								                	negocio_id=info.negocio_id;
 								                	correcto(info.mensaje);
 								                	myDropzone.processQueue(); // Tell Dropzone to process all queued files.								                	
 								                }else{
 								                	error(info.mensaje);
-								                }
+								                }*/
 								              }
 								          });
 								}
 					    });
 
                         this.on("success", function(file, data) {
-                        	correcto("Se cargo correctamente la imagen:"+file.name);
+                        	/*correcto("Se cargo correctamente la imagen:"+file.name);
+                        	AgregarImagen(file.name,negocio_id);*/
                             });
                         this.on("maxfilesexceeded", function(file){
                         	imagenes--;
@@ -64,6 +74,7 @@ $(document).ready(function() {
                 });
 			  myDropzone.on("complete", function(file) {
 				  alert("Se completo con exito el registro");
+				  AgregarImagen(parseInt(negocio_id),file.name);
 			  });
               myDropzone.on("addedfile", function(file) {
               	file.previewElement.addEventListener("click", function() {
@@ -78,7 +89,6 @@ $(document).ready(function() {
                 });
 
     function RemoverImagen(filename){
-    	alert(filename);
     	var base_url = baseURL();
 			$.ajax({
 		         type: "POST",
@@ -97,6 +107,42 @@ $(document).ready(function() {
 		          });
     }
 
+    function AgregarImagen(negocio_id,filename){
+    	var base_url = baseURL();
+    	var id=parseInt(negocio_id);
+			$.ajax({
+		         type: "POST",
+		         url: base_url + "negocio/agregarImagen", 
+		         data: {
+		         	negocio_id: id,
+		    		archivo: filename
+		    	 },
+		         dataType: "text",  
+		         cache:false,
+		         success: 
+		              function(data){
+		                alert(data);
+		              }
+		          });
+    }
+
+    function GetCategorias(value){
+    	var categorias=[];
+    	var temp=value.split(",");
+    	temp.forEach(function(item) {
+		    var data=item.split("_");
+		    var categoria=new Categoria();
+		    categoria.TipoNegocioId=parseInt(data[0]);
+		    categoria.id=parseInt(data[1]);
+		    categorias[categorias.length]=categoria;
+		});
+		return categorias;
+    }
+
+    function Categoria(){
+    	this.id=-1;
+    	this.TipoNegocioId=-1;
+    }
 
 	function Negocio()
 	{
@@ -107,6 +153,8 @@ $(document).ready(function() {
 		this.telefono="";
 		this.ubicaciones=[];
 		this.contactos=[];
+		this.imagenes=[];
+		this.categorias=[];
 	}
 
 	$('.select2').select2({placeholder: 'Seleccionar categorias'});
@@ -120,6 +168,11 @@ $(document).ready(function() {
 	function getUbicacion(codigo){		
 		var id = codigo.replace("ubicacion_", "");
 		return ubicaciones[id];
+	}
+
+	function getContacto(codigo){
+		var id = codigo.replace("contacto_", "");
+		return contactos[id];	
 	}
 
 	/*Validacion informacion negocio*/
@@ -155,6 +208,7 @@ $(document).ready(function() {
 		negocio.descripcion=descripcion;
 		negocio.email=email;
 		negocio.telefono=telefono;
+		negocio.categorias=GetCategorias(categorias);
 		return negocio;
 	}
 

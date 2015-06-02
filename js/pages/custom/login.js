@@ -16,8 +16,7 @@ $(document).ready(function() {
 
 		$("#login").click(function()
 		{
-		    var base_url = baseURL();//window.location.origin+'/Publiec/';
-		    alert("asdsd");
+		    var base_url = baseURL();
 		    $.ajax({
 		         type: "POST",
 		         url: base_url + "usuario/login", 

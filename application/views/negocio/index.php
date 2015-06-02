@@ -1,3 +1,12 @@
+<style type="text/css">
+    .desactivado {
+        color: red;
+    }
+    .activo {
+        color: black;
+    }
+</style>
+
 <!-- .page-content -->
             <div class="page-content sidebar-page right-sidebar-page clearfix">
                 <!-- .page-content-wrapper -->
@@ -35,69 +44,64 @@
                                         <h4 class="panel-title">Lista</h4><a href="<?=site_url()?>Negocio/create">Crear nuevo negocio</a>
                                     </div>
                                     <div class="panel-body">
-                                        <table class="table table-bordered">
+                                        <table class="table table-bordered" id="listaNegocios">
                                             <thead>
                                                 <tr>
-                                                    <th class="per5">
-                                                        #
-                                                    </th>
+                                                <th class="per10">Atendiendo</th>
                                                     <th class="per25">Nombre</th>
                                                     <th class="per40">Descripcion</th>
-                                                    <th class="per15">Teléfono</th>
-                                                    <th class="per5">
-                                                        
-                                                    </th>
+                                                    <th class="per10"># Ubicaciones</th>
+                                                    <th class="per5"></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>
-                                                        1
-                                                    </td>
-                                                    <td>Jacob Olsen</td>
-                                                    <td>Developer</td>
-                                                    <td>2530$</td>
-                                                    <td>
-                                                        <a href="">Editar</a>
-                                                        <a href="">Eliminar</a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        2
-                                                    </td>
-                                                    <td>Lara James</td>
-                                                    <td>SEO</td>
-                                                    <td>3700$</td>
-                                                    <td>
-                                                        <a href="">Editar</a>
-                                                        <a href="">Eliminar</a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        3
-                                                    </td>
-                                                    <td>Steve Sidwell</td>
-                                                    <td>Photographer</td>
-                                                    <td>1340$</td>
-                                                    <td>
-                                                        <a href="">Editar</a>
-                                                        <a href="">Eliminar</a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        4
-                                                    </td>
-                                                    <td>Elena Dobrev</td>
-                                                    <td>Project manger</td>
-                                                    <td>5600$</td>
-                                                    <td>
-                                                        <a href="">Editar</a>
-                                                        <a href="">Eliminar</a>
-                                                    </td>
-                                                </tr>
+                                                <?php foreach ($negocios as $item){?>
+                                                    <? if($item->Activo==1){$estilo="activo";}else{$estilo="desactivado";} ?>
+                                                    <tr id="<?=$item->NegocioID?>" class="<?=$estilo?>" target="<?=$item->Activo?>">
+                                                        <td>
+                                                            <div class="toggle-custom">
+                                                            <label class="toggle" data-on="ON" data-off="OFF">
+                                                                <input type="checkbox" id="checkbox-toggle" name="checkbox-toggle" checked>
+                                                                <span class="button-checkbox"></span>
+                                                            </label>                                                            
+                                                            </div>
+                                                        </td>
+                                                        <td><?=$item->Nombre?></td>
+                                                        <td><?=$item->Descripcion?></td>
+                                                        <td><?=$item->Ubicaciones?></td>
+                                                        <td>
+                                                        <!-- /btn-group -->
+                                                        <div class="btn-group dropdown mb10 mr10">
+                                                            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                                Operaciones
+                                                                <span class="caret"></span>
+                                                            </button>
+                                                            <ul class="dropdown-menu right" role="menu">
+                                                                <li>
+                                                                    <a href="#" id="editarNegocio">Editar</a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="#" id="eliminarNegocio">
+                                                                    <? if($item->Activo){?>
+                                                                        Desactivar
+                                                                    <?
+                                                                     }else{
+                                                                    ?>
+                                                                        Activar
+                                                                    <? } ?>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="divider"></li>
+                                                                <li>
+                                                                    <a href="#">Ver Información</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                            
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                <?php } ?>                                                
                                             </tbody>
                                         </table>
                                     </div>

@@ -14,13 +14,13 @@ class UsuarioModel extends MasterModel {
 		$nombreUsuario=trim(strtolower($this->input->post('usuario')));
 		$email=trim($this->input->post('email'));
 		if(trim($nombreUsuario)==""){
-			$mensaje="Campo de Usuario esta vacio";
+			$mensaje="Campo de usuario esta vacio";
 		}elseif(trim($this->input->post('password'))==""){
 			$mensaje="Campo de contraseña esta vacio";
 		}elseif($email==""){
 			$mensaje="Campo de email esta vacio";
 		}elseif(trim($this->input->post('nombre'))==""){
-			$mensaje="Campo del Nombre Completo esta vacio";
+			$mensaje="Campo del nombre completo esta vacio";
 		}else{
 			$encontrado=$this->getCount("LOWER(NombreUsuario)=LOWER('$nombreUsuario')");
 			if($encontrado==0){
@@ -48,7 +48,7 @@ class UsuarioModel extends MasterModel {
 				$mensaje="El correo ingresado ya se encuentra registrado";
 				}
 			}else{
-				$mensaje="El usuario ya existe, escriba otro nommbre de usuario";
+				$mensaje="El usuario ya existe, escriba otro nombre de usuario";
 			}
 		}		
     	return $mensaje;
