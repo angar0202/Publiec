@@ -3,17 +3,18 @@ $(document).ready(function() {
 	Dropzone.autoDiscover = false;
 	var imagenes=0;
 	/*Imagenes de Negocio*/
-	// Now that the DOM is fully loaded, create the dropzone, and setup the
-              // event listeners
+	// Now that the DOM is fully loaded, create the dropzone, and setup the event listeners
               var myDropzone = new Dropzone("#my-awesome-dropzone",{
               		autoProcessQueue: false,
-                    maxFiles: 5,
-                    maxFilesize: 1,
+                    maxFiles: 10,
+     				uploadMultiple: false,
+     				parallelUploads: 10,
+                    maxFilesize: 10,
                     acceptedFiles: "image/*", /*is this correct?*/
+                    addRemoveLinks: true,
                     init: function(){
-                    	var submitButton = document.querySelector("#CrearNegocio")
-					        myDropzone = this; // closure
-
+                    	var submitButton = document.querySelector("#CrearNegocio");
+					    myDropzone = this; // closure
 					    submitButton.addEventListener("click", function() {
 					    	var negocio=validar();
 								if(negocio!=null){
@@ -25,8 +26,7 @@ $(document).ready(function() {
 										var contacto=getContacto($(this).attr('id'));
 										negocio.contactos[negocio.contactos.length]=contacto;
 									});
-									var negocioJson=JSON.stringify(negocio);
-									alert(negocioJson);
+									var negocioJson=JSON.stringify(negocio);									
 									/*Guardar Informacion*/
 									var base_url = baseURL();
 									$.ajax({
@@ -39,25 +39,24 @@ $(document).ready(function() {
 								         cache:false,
 								         success: 
 								              function(data){
-								              	alert(data);
-								                /*var info=$.parseJSON(data);
+								              	var info=$.parseJSON(data);
 								                if(info.resultado==true){
 								                	negocio.id=info.negocio_id;
 								                	negocio_id=info.negocio_id;
 								                	correcto(info.mensaje);
-								                	myDropzone.processQueue(); // Tell Dropzone to process all queued files.								                	
+								                	myDropzone.processQueue(); // Tell Dropzone to process all queued files.
 								                }else{
 								                	error(info.mensaje);
-								                }*/
-								              }
-								          });
+								                }
+								              },
+								          error: function(xhr, ajaxOptions, thrownError){
+								              alert(xhr.status);
+									          alert(xhr.responseText);
+									          alert(thrownError);
+								          }
+								    });
 								}
 					    });
-
-                        this.on("success", function(file, data) {
-                        	/*correcto("Se cargo correctamente la imagen:"+file.name);
-                        	AgregarImagen(file.name,negocio_id);*/
-                            });
                         this.on("maxfilesexceeded", function(file){
                         	imagenes--;
                             alert("No more files please!");
@@ -73,20 +72,18 @@ $(document).ready(function() {
                     }
                 });
 			  myDropzone.on("complete", function(file) {
-				  alert("Se completo con exito el registro");
 				  AgregarImagen(parseInt(negocio_id),file.name);
+				  if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
+			        alert("Se completo con exito el registro");			        
+			        window.location.replace(baseURL()+'negocio/index');
+			      }
 			  });
-              myDropzone.on("addedfile", function(file) {
-              	file.previewElement.addEventListener("click", function() {
-                    bootbox.confirm("¿Desea remover este archivo "+file.name+"?", function(result) {
-                        if(result==true){
-                          imagenes--;
-                          myDropzone.removeFile(file);
-                          RemoverImagen(file.name);
-                        }
-                    });
-                  });
-                });
+			  myDropzone.on("sending", function(file, xhr, formData) {
+				  var code = Date.now();
+				  var name = $.md5(code+"_"+file.name.toUpperCase());
+				  alert(name);
+				  formData.append(name, file);
+			  });
 
     function RemoverImagen(filename){
     	var base_url = baseURL();
@@ -121,7 +118,7 @@ $(document).ready(function() {
 		         cache:false,
 		         success: 
 		              function(data){
-		                alert(data);
+		                log(data);
 		              }
 		          });
     }

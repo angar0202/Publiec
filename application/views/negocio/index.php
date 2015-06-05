@@ -16,7 +16,7 @@
                         <div id="page-header" class="clearfix">
                             <div class="page-header">
                                 <h2>Mis Negocios</h2>
-                                <span class="txt">Administración de mis negocios, servicios, etc. registrados</span>
+                                <span class="txt">Administración de mis negocios y servicios registrados</span>
                             </div>
                             <div class="header-stats">
                                 <div class="spark clearfix">
@@ -38,7 +38,7 @@
                             <!-- Start .row -->
                             <div class="col-lg-12">
                                 <!-- col-lg-12 start here -->
-                                <div class="panel panel-default plain toggle panelClose panelRefresh">
+                                <div class="panel panel-default plain">
                                     <!-- Start .panel -->
                                     <div class="panel-heading white-bg">
                                         <h4 class="panel-title">Lista</h4><a href="<?=site_url()?>Negocio/create">Crear nuevo negocio</a>
@@ -55,7 +55,8 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <?php foreach ($negocios as $item){?>
+                                                <?php 
+                                                foreach ($negocios as $item){?>
                                                     <? if($item->Activo==1){$estilo="activo";}else{$estilo="desactivado";} ?>
                                                     <tr id="<?=$item->NegocioID?>" class="<?=$estilo?>" target="<?=$item->Activo?>">
                                                         <td>
@@ -71,17 +72,17 @@
                                                         <td><?=$item->Ubicaciones?></td>
                                                         <td>
                                                         <!-- /btn-group -->
-                                                        <div class="btn-group dropdown mb10 mr10">
-                                                            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                        <div class="btn-group dropdown mb10 mr10">                                                        
+                                                            <button type="button" id="opciones_<?=$item->NegocioID?>" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
                                                                 Operaciones
                                                                 <span class="caret"></span>
                                                             </button>
-                                                            <ul class="dropdown-menu right" role="menu">
+                                                            <ul class="dropdown-menu" role="menu" id="opciones_menu_<?=$item->NegocioID?>" style="position:fixed;">
                                                                 <li>
                                                                     <a href="#" id="editarNegocio">Editar</a>
                                                                 </li>
                                                                 <li>
-                                                                    <a href="#" id="eliminarNegocio">
+                                                                    <a href="#" id="desactivarNegocio">
                                                                     <? if($item->Activo){?>
                                                                         Desactivar
                                                                     <?
@@ -91,14 +92,15 @@
                                                                     <? } ?>
                                                                     </a>
                                                                 </li>
-                                                                <li class="divider"></li>
                                                                 <li>
                                                                     <a href="#">Ver Información</a>
                                                                 </li>
+                                                                <li class="divider"></li>
+                                                                <li>
+                                                                    <a href="#" id="eliminarNegocio">Eliminar Negocio</a>
+                                                                </li>
                                                             </ul>
                                                         </div>
-                                                            
-                                                            
                                                         </td>
                                                     </tr>
                                                 <?php } ?>                                                

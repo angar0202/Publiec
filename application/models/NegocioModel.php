@@ -24,6 +24,7 @@ class NegocioModel extends MasterModel {
 				   $this->db->insert('negocio',$data);
 				   $negocio_id = $this->db->insert_id();
 				   /*Ubicaciones del Negocio*/
+				   $ubicaciones=array();
 				   foreach ($negocio->ubicaciones as $u) {
 					   $ubicacion = array(
 					   'NegocioID' => $negocio_id ,
@@ -32,18 +33,25 @@ class NegocioModel extends MasterModel {
 					   'Latitud' => $u->latitud,
 					   'Longitud' => $u->longitud
 						);
-					   $this->db->insert('negocioubicacion',$ubicacion);
+					   $ubicaciones[]=$ubicacion;
+				   }
+				   if(count($ubicaciones)>0){
+				   		$this->db->insert_batch('negocioubicacion',$ubicaciones);	
 				   }
 
+				   $categorias= array();
 				   foreach ($negocio->categorias as $cat) {
-				   		$categoria_id=intval(htmlspecialchars(trim($cat->id)));
+				   		$categoria_id=intval(trim($cat->id));
 				   		$negocio_id=intval(trim($negocio_id));
-				   		$this->db->set('NegocioID', $negocio_id);
-				   		$this->db->set('CategoriaID', $categoria_id);
-				   		$this->db->insert('negociocategoria');
-				   		$mensaje.="_id:".$negocio_id."cat".$categoria_id;				   		
+				   		$categoria=array('NegocioID' => $negocio_id,'CategoriaID' => $categoria_id);
+				   		$categorias[]=$categoria;
 				   }
 				   
+					if(count($categorias)>0){
+					   		$this->db->insert_batch('negociocategoria',$categorias);					   		
+					}
+
+					$contactos=array();
 				   foreach ($negocio->contactos as $co) {
 				   		$contacto= array(
 				   			'NegocioID' => $negocio_id,
@@ -53,18 +61,24 @@ class NegocioModel extends MasterModel {
 				   			'Email'=> $co->email,
 				   			'Direccion'=> $co->direccion
 				   		 );
-				   		//$this->db->insert('contacto',$contacto);
+				   		$contactos[]=$contacto;
 				   }
-				   $mensaje.="___".$negocio_id;
-				    $this->db->trans_rollback();
+				   
+				   if(count($contactos)>0){
+					   	$this->db->insert_batch('contacto',$contactos);
+					}
 
 				   //$this->db->trans_complete();
-				   /*if ($this->db->trans_status() === FALSE)
+				   if ($this->db->trans_status() === FALSE)
 				   {
+				   		$this->db->_error_message();
+				   		$this->db->_error_number();
+				   		$this->db->trans_rollback();
 					    $mensaje="No se pudo crear el Negocio";
 				   }else{
+				   		$this->db->trans_commit();
 				   		$mensaje="Se creo el negocio #$negocio_id correctamente";
-				   }*/
+				   }
 			}
 			else
 			{
@@ -142,7 +156,7 @@ class NegocioModel extends MasterModel {
 		}		
     	return $mensaje;
 	}
-	public function delete()
+	public function eliminarNegocio()
 	{
 		$negocioID=trim($this->input->post('NegocioID'));
 		$this->delete($negocioID);

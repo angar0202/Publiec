@@ -53,9 +53,11 @@ class MasterModel extends CI_Model {
         $id=$vars[$this->primaryKey];
         unset($vars[$this->primaryKey]);
         $this->db->update($this->table, $vars, array($this->primaryKey => $id));
+        return $this->db->affected_rows();
     }
 
     function Delete($id){
-    	$this->db->delete($this->table, array($this->primaryKey => $id));         
+    	$this->db->delete($this->table, array($this->primaryKey => $id));
+        return $this->db->affected_rows();      
     }
 }

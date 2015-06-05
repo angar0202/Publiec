@@ -101,5 +101,63 @@
         <script src="<?=$url?>js/pages/custom/registro.js"></script>
         <script src="<?=$url?>js/pages/custom/recordar.js"></script>
         <script src="<?=$url?>js/pages/custom/login.js"></script>
+
+        <script type="text/javascript">
+            var sesion=false;
+            setInterval(function () {
+                    session=getCookie("session");
+                    if(session==""){session=false;}
+                    var base_url= "<?=base_url()?>/sesion";
+                    $.ajax({
+                    type : 'POST',
+                    url  : base_url+"/islogin",
+                    dataType:"html",
+                    success : function(data){
+                        if(data==1){
+                           //session available
+                           sesion=true; 
+                           setCookie("session", true, 365);
+                           console.log("sesion iniciada");                 
+                        }else{
+                           // expired
+                           console.log("sesion expirada");                 
+                           if(sesion){
+                                $.gritter.add({
+                                title: 'Sesión de Usuario',
+                                text: 'Su sesión a estado sin uso demasiado tiempo.',
+                                time: '',
+                                close_icon: 'l-arrows-remove s16',
+                                icon: 'glyphicon glyphicon-user',
+                                class_name: 'error-notice'
+                                });
+                               setInterval(function () {
+                                    window.location.replace(base_url+'/logout');
+                                },10000);
+                            }             
+                           sesion=false;
+                           setCookie("session", false, 365);
+                        }
+                      } 
+                    });
+                },5000);
+
+            function setCookie(cname, cvalue, exdays) {
+                var d = new Date();
+                d.setTime(d.getTime() + (exdays*24*60*60*1000));
+                var expires = "expires="+d.toUTCString();
+                document.cookie = cname + "=" + cvalue + "; " + expires;
+            }
+
+            function getCookie(cname) {
+                var name = cname + "=";
+                var ca = document.cookie.split(';');
+                for(var i=0; i<ca.length; i++) {
+                    var c = ca[i];
+                    while (c.charAt(0)==' ') c = c.substring(1);
+                    if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+                }
+                return "";
+            }
+        </script>
     </body>
 </html>

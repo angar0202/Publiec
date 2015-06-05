@@ -217,6 +217,37 @@ class Negocio extends CI_Controller {
 		}
 	}
 
+	public function eliminarNegocio(){
+		$isLogin=$this->common->isLogin();
+		if($isLogin)
+		{
+			$negocio_id=$this->input->post("negocio_id");			
+			$flag=false;
+			if($negocio_id==""){
+				$mensaje="Negocio no encontrado";
+			}else{
+				$where= array('NegocioID' =>  $negocio_id);
+				$negocio=$this->NegocioModel->first($where);
+				if($negocio!=null){
+						if($this->NegocioModel->Delete($negocio->NegocioID)>0){
+							$mensaje="Negocio eliminado correctamente";
+							$flag=true;
+						}else{
+							$mensaje="No se pudo eliminar el negocio";
+						}
+				}
+				else{
+					$mensaje="Negocio no encontrado";
+				}
+			}
+			echo json_encode(array('mensaje'=>$mensaje, 'resultado'=>$flag));
+		}
+		else
+		{
+			redirect('home','refresh'); 
+		}
+	}
+
 	public function cambiarEstado(){
 		$isLogin=$this->common->isLogin();
 		if($isLogin)
