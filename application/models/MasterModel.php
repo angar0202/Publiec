@@ -45,6 +45,7 @@ class MasterModel extends CI_Model {
 
     function Create($data){
         $this->db->insert($this->table, $data);
+        return $this->db->affected_rows();
     }
 
     function Update($data){

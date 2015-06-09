@@ -9,7 +9,8 @@ class Negocio extends CI_Controller {
         $this->load->model('TipoNegocioModel');
         $this->load->model('CategoriaModel');    
         $this->load->model('NegocioModel');
-        $this->load->model('NegocioImagenModel');
+        $this->load->model('NegocioPublicacionModel');
+        $this->load->model('NegocioImagenModel');        
         $this->load->helper(array('html','form'));
     }
 
@@ -29,6 +30,7 @@ class Negocio extends CI_Controller {
 			$info["info_negocio"]="";//$this->load->view($this->views->INFO_NEGOCIO,null,true);
 			$data["negocios"]=$this->NegocioModel->getByUsuario($this->session->userdata('id_usuario'));
 			$sections["container"]=$this->load->view($this->views->NEGOCIO_INDEX,$data,true);
+			$sections["estilo"]='';
 			$main["body"]=$this->load->view($this->views->CONTAINER,$sections,true);
 			if($isLogin==false)
 			{
@@ -50,7 +52,7 @@ class Negocio extends CI_Controller {
 		$isLogin=$this->common->isLogin();
 		if($isLogin)
 		{
-			$top["panel_superior"]=$this->load->view($this->views->PANEL_SUPERIOR,null,true);
+			$top["panel_superior"]="";//$this->load->view($this->views->PANEL_SUPERIOR,null,true);
 			$sections["header"]=$this->load->view($this->views->HEADER,$top,true);
 			$usr["nombreUsuario"]=$this->session->userdata('fullname');
 			$control["panel_usuario"]=$this->load->view($this->views->PANEL_USUARIO,$usr,true);
@@ -62,6 +64,7 @@ class Negocio extends CI_Controller {
 			$data["tiposNegocios"]=$this->TipoNegocioModel->TiposNegociosCategorias();
 			$data["categorias"]=$this->CategoriaModel->GetAll();
 			$sections["container"]=$this->load->view($this->views->NEGOCIO_CREATE,$data,true);
+			$sections["estilo"]='';
 			$main["body"]=$this->load->view($this->views->CONTAINER,$sections,true);
 			if($isLogin==false)
 			{
@@ -79,7 +82,8 @@ class Negocio extends CI_Controller {
 		}
 	}
 
-	public function edit(){
+	public function edit()
+	{
 		$isLogin=$this->common->isLogin();
 		if($isLogin)
 		{
@@ -99,6 +103,7 @@ class Negocio extends CI_Controller {
 				*/
 				$data["id"]=$id;
 				$sections["container"]=$this->load->view("negocio/edit",$data,true);
+				$sections["estilo"]='';
 				$main["body"]=$this->load->view($this->views->CONTAINER,$sections,true);
 				if($isLogin==false)
 				{
@@ -121,7 +126,8 @@ class Negocio extends CI_Controller {
 		}
 	}
 
-	public function nuevo(){
+	public function nuevo()
+	{
 		$isLogin=$this->common->isLogin();
 		$negocio_id=-1;
 		$mensaje="";
@@ -148,28 +154,30 @@ class Negocio extends CI_Controller {
 			redirect('home','refresh'); 
 		}
 	}
-	public function upload(){
-    if (!empty($_FILES)) {
-		$tempFile = $_FILES['file']['tmp_name'];
-		$fileName = $_FILES['file']['name'];
-
-		if (!file_exists('uploads/'.md5($this->session->userdata('id_usuario')))) {
-		    mkdir('uploads/'.md5($this->session->userdata('id_usuario')), 0777, true);
-		}
-		$targetPath = getcwd() . '/uploads/'.md5($this->session->userdata('id_usuario')).'/';
-		//$targetFile = $targetPath . $fileName ;
-		$date = new DateTime();
-	    $newFileName = $date->getTimestamp().$_FILES['file']['name'];
-	    $targetFile =  $targetPath.$newFileName;
-		move_uploaded_file($tempFile, $targetFile);		
-		// if you want to save in db,where here
-		// with out model just for example
-		// $this->load->database(); // load database
-		// $this->db->insert('file_table',array('file_name' => $fileName));
+	public function upload()
+	{
+    	if (!empty($_FILES)) {
+			$tempFile = $_FILES['file']['tmp_name'];
+			$fileName = $_FILES['file']['name'];
+			$negocio_id=$this->input->post('negocio_id');
+			if (!file_exists('uploads/'.md5($this->session->userdata('id_usuario')))) {
+			    mkdir('uploads/'.md5($this->session->userdata('id_usuario')), 0777, true);
+			}
+			$targetPath = getcwd() . '/uploads/'.md5($this->session->userdata('id_usuario')).'/';
+			$date = new DateTime();
+			$code=$date->getTimestamp();
+		    $newFileName = $code.$_FILES['file']['name'];
+		    $targetFile =  $targetPath.$newFileName;
+			move_uploaded_file($tempFile, $targetFile);
+			$url='/uploads/'.md5($this->session->userdata('id_usuario')).'/'.$newFileName;
+			$negocioID=htmlspecialchars($negocio_id);
+			$data= array('NegocioID' =>  $negocioID, 'Url' => $url);
+			$this->NegocioImagenModel->create($data);
+			$this->NegocioModel->PrimeraPublicacion($negocioID,$url);
+			$this->NegocioModel->SegundaPublicacion($negocioID);
 		}
     }
-
-    public function agregarImagen(){
+    /*public function agregarImagen(){
     	$isLogin=$this->common->isLogin();
 		if($isLogin)
 		{
@@ -185,7 +193,7 @@ class Negocio extends CI_Controller {
 		}else{
 			redirect('home','refresh'); 
 		}
-    }
+    }*/
 
 	public function eliminarImagen()
 	{
@@ -217,7 +225,8 @@ class Negocio extends CI_Controller {
 		}
 	}
 
-	public function eliminarNegocio(){
+	public function eliminarNegocio()
+	{
 		$isLogin=$this->common->isLogin();
 		if($isLogin)
 		{
@@ -248,7 +257,8 @@ class Negocio extends CI_Controller {
 		}
 	}
 
-	public function cambiarEstado(){
+	public function cambiarEstado()
+	{
 		$isLogin=$this->common->isLogin();
 		if($isLogin)
 		{
@@ -278,6 +288,87 @@ class Negocio extends CI_Controller {
 		{
 			redirect('home','refresh'); 
 		}
+	}
+
+	public function perfil()
+	{
+		$id=$this->input->post("NegocioID");
+		if($id==""){
+			show_404();
+			return;
+		}
+		$isLogin=$this->common->isLogin();
+		$isAdmin=false;
+
+		if($isLogin){
+			if($isAdmin){
+				$top["panel_superior"]=$this->load->view($this->views->PANEL_SUPERIOR,null,true);
+			}else{
+				$top["panel_superior"]="";
+			}
+		}else{
+			$top["panel_superior"]="";
+		}
+		$sections["header"]=$this->load->view($this->views->HEADER,$top,true);
+		
+		if($isLogin)
+		{
+			$usr["nombreUsuario"]=$this->session->userdata('fullname');
+			$control["panel_usuario"]=$this->load->view($this->views->PANEL_USUARIO,$usr,true);
+			if($isAdmin)
+			{
+				$menu["menu_administrador"]=$this->load->view($this->views->MENU_ADMINISTRADOR,null,true);	
+			}
+			else
+			{
+				$menu["menu_administrador"]="";
+			}
+			$control["menu_usuario"]=$this->load->view($this->views->MENU_USUARIO,$menu,true);			
+		}else{
+			$control["panel_usuario"]="";
+			$control["menu_usuario"]=$this->load->view($this->views->MENU_INVITADO,null,true);
+		}
+		$sections["menu"]=$this->load->view($this->views->MENU,$control,true);		
+		$sections["publicaciones"]=$this->load->view($this->views->ACTIVIDAD_NEGOCIOS,null,true);
+		
+		if($isLogin)
+		{
+			$info["info_negocio"]="";//$this->load->view($this->views->INFO_NEGOCIO,null,true);	
+		}
+		else
+		{
+			$info["info_negocio"]="";
+		}
+
+		$negocio=$this->NegocioModel->perfilNegocio($id);
+
+		$info["nombreNegocio"]=$negocio->Nombre;
+		$info["atendiendo"]="Estamos Atendiendo!";
+		$info["tiposNegocio"]=$negocio->tiposNegocio;
+		$info["ubicaciones"]=$negocio->ubicaciones;
+		$info["usuario"]=$this->session->userdata('fullname');
+		$info["telefono"]=$negocio->Telefono;
+		$info["email"]=$negocio->Email;
+		$info["descripcion"]=$negocio->Descripcion;
+		$info["categorias"]=$negocio->categorias;
+		$info["publicaciones"]=$this->NegocioPublicacionModel->GetByNegocioId($id);
+
+		$sections["container"]=$this->load->view("negocio/perfil",$info,true);
+		if(!$isLogin)
+		{
+		$sections["container"].=$this->load->view($this->views->REGISTRO,null,true); // Se agrega pantalla modal de REgistro de Usuario
+		$sections["container"].=$this->load->view($this->views->LOGIN,null,true); // Se agrega pantalla modal de LOGIN de Usuario
+		$sections["container"].=$this->load->view($this->views->RECORDAR,null,true); // Se agrega pantalla modal de RECORDAR de Usuario
+		}
+		$sections["estilo"]='';
+		$main["body"]=$this->load->view($this->views->CONTAINER,$sections,true);
+		if($isLogin==false){
+			$main["plugins"]=$this->load->view($this->views->MAPAS,null,true);
+			$main["plugins"].=$this->load->view($this->views->VENTANA_MODALES,null,true);
+		}else{
+			$main["plugins"]=$this->load->view($this->views->MAPAS,null,true);
+		}
+		$this->load->view($this->views->MAIN,$main);		
 	}
 	
 }

@@ -29,6 +29,7 @@
         <link href="<?=$url?>css/main.css" rel="stylesheet" />
         <!-- Custom stylesheets ( Put your own changes here ) -->
         <link href="<?=$url?>css/custom.css" rel="stylesheet" />
+        <link href="<?=$url?>css/card.css" rel="stylesheet" />
         <!-- Fav and touch icons -->
         <link rel="apple-touch-icon-precomposed" sizes="144x144" href="<?=$url?>img/ico/apple-touch-icon-144-precomposed.png">
         <link rel="apple-touch-icon-precomposed" sizes="114x114" href="<?=$url?>img/ico/apple-touch-icon-114-precomposed.png">
@@ -37,6 +38,7 @@
         <link rel="icon" href="<?=$url?>img/ico/favicon.ico" type="image/png">
         <!-- Windows8 touch icon ( http://www.buildmypinnedsite.com/ )-->
         <meta name="msapplication-TileColor" content="#3399cc" />
+
         
     </head>
 	<body>
@@ -95,7 +97,7 @@
         <script src="<?=site_url()?>plugins/ui/bootstrap-sweetalert/sweet-alert.js"></script>
         <script src="<?=site_url()?>plugins/misc/gmaps/gmaps.js"></script>
         <script src="<?=$url?>js/pages/custom/general.js"></script>
-
+        <script src="<?=base_url()?>js/jquery.redirect.js"></script>
         <?=$plugins?>
         <script src="<?=$url?>js/pages/custom/perfil.js"></script>
         <script src="<?=$url?>js/pages/custom/registro.js"></script>

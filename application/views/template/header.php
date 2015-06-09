@@ -7,7 +7,7 @@
             <a href="<?=site_url()?>" class="navbar-brand hidden-xs hidden-sm">
                 <!--<img src="<?=site_url()?>img/logo.png" class="logo hidden-xs" alt="Dynamic logo">
                 <img src="<?=site_url()?>img/logosm.png" class="logo-sm hidden-lg hidden-md" alt="Dynamic logo">-->
-                <span class="reset-layout tipB"></span><h3 style="color:white;">publiec</h3>
+                <span class="reset-layout tipB"></span><h3 style="color:white;"></h3>
             </a>
             <!-- / navbar-brand -->
             <!-- .no-collapse -->
@@ -20,9 +20,9 @@
                             <span class="sr-only">Ocultar panel</span>
                         </a>
                     </li>
-                    <li>
+                    <!--<li>
                         <a href="#" class="reset-layout tipB" title="Actualizar"><i class="fa fa-history"></i></a>
-                    </li>                    
+                    </li>-->                    
                 </ul>
                 
                 <!-- / top left nav -->

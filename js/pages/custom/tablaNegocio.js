@@ -9,6 +9,10 @@
 			var $row = $(this).closest("tr");
 			$.redirect(baseURL()+'negocio/edit', {'NegocioID': $row.attr('id')});
 		});
+		$('#listaNegocios').on('click', '#perfilNegocio', function() {
+			var $row = $(this).closest("tr");
+			$.redirect(baseURL()+'negocio/perfil', {'NegocioID': $row.attr('id')});
+		});
 		$('#listaNegocios').on('click', '#desactivarNegocio', function() {
 			var $row = $(this).closest("tr");			
 			var activo=$row.attr('target');

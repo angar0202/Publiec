@@ -2,8 +2,7 @@ $(document).ready(function() {
 	var negocio_id=0;
 	Dropzone.autoDiscover = false;
 	var imagenes=0;
-	/*Imagenes de Negocio*/
-	// Now that the DOM is fully loaded, create the dropzone, and setup the event listeners
+	/*Imagenes de Negocio*/	
               var myDropzone = new Dropzone("#my-awesome-dropzone",{
               		autoProcessQueue: false,
                     maxFiles: 10,
@@ -12,8 +11,11 @@ $(document).ready(function() {
                     maxFilesize: 10,
                     acceptedFiles: "image/*", /*is this correct?*/
                     addRemoveLinks: true,
+                    dictRemoveFile: "Eliminar",
+                    dictMaxFilesExceeded: "Usted no puede subir mas archivos",
                     init: function(){
                     	var submitButton = document.querySelector("#CrearNegocio");
+                    	var nombreArchivo="";
 					    myDropzone = this; // closure
 					    submitButton.addEventListener("click", function() {
 					    	var negocio=validar();
@@ -59,11 +61,8 @@ $(document).ready(function() {
 					    });
                         this.on("maxfilesexceeded", function(file){
                         	imagenes--;
-                            alert("No more files please!");
+                            alert("No se puede agregar mas archivos");
                             myDropzone.removeFile(file);
-                        });
-                        this.on("uploadprogress", function(file, progress) {
-                            console.log("File progress", progress);
                         });    
                         },
                     accept: function(file, done) {
@@ -72,56 +71,16 @@ $(document).ready(function() {
                     }
                 });
 			  myDropzone.on("complete", function(file) {
-				  AgregarImagen(parseInt(negocio_id),file.name);
 				  if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
-			        alert("Se completo con exito el registro");			        
-			        window.location.replace(baseURL()+'negocio/index');
+			        swal("Registro Completo!", "Se completo con exito el registro del Negocio", "success");
+			        setInterval(function () {
+                            window.location.replace(baseURL()+'negocio/index');
+                    },4000);			        
 			      }
 			  });
 			  myDropzone.on("sending", function(file, xhr, formData) {
-				  var code = Date.now();
-				  var name = $.md5(code+"_"+file.name.toUpperCase());
-				  alert(name);
-				  formData.append(name, file);
+				  formData.append("negocio_id",negocio_id);
 			  });
-
-    function RemoverImagen(filename){
-    	var base_url = baseURL();
-			$.ajax({
-		         type: "POST",
-		         url: base_url + "negocio/eliminarImagen", 
-		         data: {
-		    		archivo: filename
-		    	 },
-		         dataType: "text",  
-		         cache:false,
-		         success: 
-		              function(data){
-		                console.log(data);
-		                //var info=$.parseJSON(data);
-		                //alert(info.resultado);
-		              }
-		          });
-    }
-
-    function AgregarImagen(negocio_id,filename){
-    	var base_url = baseURL();
-    	var id=parseInt(negocio_id);
-			$.ajax({
-		         type: "POST",
-		         url: base_url + "negocio/agregarImagen", 
-		         data: {
-		         	negocio_id: id,
-		    		archivo: filename
-		    	 },
-		         dataType: "text",  
-		         cache:false,
-		         success: 
-		              function(data){
-		                log(data);
-		              }
-		          });
-    }
 
     function GetCategorias(value){
     	var categorias=[];
@@ -141,6 +100,8 @@ $(document).ready(function() {
     	this.TipoNegocioId=-1;
     }
 
+	/*Crear negocio*/
+
 	function Negocio()
 	{
 		this.id=-1;
@@ -155,12 +116,6 @@ $(document).ready(function() {
 	}
 
 	$('.select2').select2({placeholder: 'Seleccionar categorias'});
-
-	/*Crear negocio*/
-
-	/*$('#CrearNegocio').click(function(){
-		
-	});*/
 
 	function getUbicacion(codigo){		
 		var id = codigo.replace("ubicacion_", "");
@@ -597,8 +552,8 @@ $(document).ready(function() {
         },
         error: function(error){
             $.gritter.add({
-                title: 'Error !!!',
-                text: 'Geolocation failed: '+error.message,
+                title: 'Error en Geolocalización',
+                text: 'Geolocalización fallo: '+error.message,
                 close_icon: 'en-cross',
                 icon: 'ec-location',
                 class_name: 'error-notice'
@@ -606,8 +561,8 @@ $(document).ready(function() {
         },
         not_supported: function(){
             $.gritter.add({
-                title: 'Error !!!',
-                text: 'Your browser do not support geolocation',
+                title: 'Error en Geolocalización',
+                text: 'Su navegador no soporta la geolocalización',
                 close_icon: 'en-cross',
                 icon: 'ec-location',
                 class_name: 'error-notice'

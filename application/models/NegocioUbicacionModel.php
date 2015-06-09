@@ -56,4 +56,14 @@ class NegocioUbicacionModel extends MasterModel {
 		$this->delete($negocioUbicacionID);
 	}
 
+	public function obtenerUbicaciones(){
+		$sql="select nu.*,n.Nombre,n.Descripcion as DescripcionNegocio,
+			(select ni.Url from negocioimagen ni where ni.NegocioID = n.NegocioID limit 1) as ImagenNegocio,
+			(select count(nf.NegocioFavoritoID) from negociofavorito nf where nf.NegocioID = n.NegocioID) as Favoritos
+			from negocioubicacion nu
+			inner join negocio n on nu.NegocioID = n.NegocioID
+			where n.Activo=1";
+		return $this->db->query($sql)->result();
+	}
+
 }

@@ -6,6 +6,8 @@ class NegocioModel extends MasterModel {
         parent::__construct();
         $this->table="Negocio";
         $this->primaryKey="NegocioID";
+        $this->load->model('NegocioPublicacionModel');
+        $this->load->model('NegocioUbicacionModel');
     }
 
     public function crearNegocio($negocio){
@@ -186,5 +188,75 @@ class NegocioModel extends MasterModel {
 			}
 			return $mensaje;
 	}
+
+	public function perfilNegocio($id){
+		$sql="select n.*, 
+		(select count(nu.NegocioUbicacionID) from negocioubicacion nu where nu.NegocioID=n.NegocioID) as ubicaciones,
+		'' categorias,'' as tiposNegocio
+		from negocio n where n.NegocioID=$id";
+		$query = $this->db->query($sql);
+		if ($query->num_rows() > 0)
+		{
+		    $negocio=$query->row();
+		    /**
+		    Categorias de Negocio
+		    */
+	        $sql="select c.Nombre from negociocategoria nc inner join categoria c on nc.CategoriaID=c.CategoriaID where nc.NegocioID=$id";
+	        $query = $this->db->query($sql);
+	        $categorias=$query->result();
+	        $nombresCategoria=array();
+	        foreach ($categorias as $c) {
+	        	$nombresCategoria[]=$c->Nombre;
+	        }
+	        $negocio->categorias=implode(',',$nombresCategoria);
+	        /**
+	        Tipos de Negocio
+	        */
+	        $sql="select t.Nombre 
+			from negociocategoria nc 
+			inner join categoria c on nc.CategoriaID=c.CategoriaID
+			inner join tiponegocio t on c.TipoNegocioID = t.TipoNegocioID
+			where nc.NegocioID=$id";
+	        $query = $this->db->query($sql);
+	        $tiposNegocio=$query->result();
+	        $nombresTiposNegocio=array();
+	        foreach ($tiposNegocio as $t) {
+	        	$nombresTiposNegocio[]=$t->Nombre;
+	        }
+	        $negocio->tiposNegocio=implode(',',$nombresTiposNegocio);
+	        return $negocio;
+		}
+	}
+
+	public function PrimeraPublicacion($negocioID,$url){			
+            if($this->NegocioPublicacionModel->GetCount("NegocioID=$negocioID")==0){
+                $negocio=$this->GetById($negocioID);
+                $publicacion = array(
+                            'NegocioID' => $negocioID,
+                            'Titulo'=>'Nuevo negocio resgitrado',
+                            'Descripcion'=>'¡Enhora buena! mi negocio esta publicado en PUBLIEC, bienvenido '.$negocio->Nombre.'!.');
+                $this->db->insert('NegocioPublicacion',$publicacion);
+                $publicacion_id = $this->db->insert_id();
+                $publicacionImagen = array('NegocioPublicacionID' => $publicacion_id,'Url'=>$url);
+                $this->db->insert('PublicacionImagen',$publicacionImagen);
+            }
+    }
+
+    public function SegundaPublicacion($negocioID){			
+            if($this->NegocioPublicacionModel->GetCount("NegocioID=$negocioID")==1){
+               $negocio=$this->GetById($negocioID);
+               $result=$this->NegocioUbicacionModel->GetWhere("NegocioID=$negocioID")->result();
+               $ubicaciones = array();
+               foreach ($result as $u) {
+               		$ubicaciones[]=$u->Direccion;
+               }
+               $ubicaciones=implode(" ; ", $ubicaciones);
+               $publicacion = array(
+                            'NegocioID' => $negocioID,
+                            'Titulo'=>'Informacion principal de Negocio',
+                            'Descripcion'=>'Ponemos a su disposición: '.$negocio->Descripcion.', nos ubicamos en:'.$ubicaciones);
+               $this->db->insert('NegocioPublicacion',$publicacion);
+            }
+    }
 
 }

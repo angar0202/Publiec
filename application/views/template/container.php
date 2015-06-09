@@ -1,6 +1,6 @@
 <?=$header?>
 <!--main-->
-<div id="wrapper">
+<div id="wrapper" <?=$estilo?>>
 	<?=$menu?>
 	<?=$publicaciones?>
 	<?=$container?>

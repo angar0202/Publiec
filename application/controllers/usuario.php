@@ -84,6 +84,7 @@ class Usuario extends CI_Controller {
 			$data["usuario"]=$usuario->NombreUsuario;
 			$data["email"]=$usuario->Email;
 			$sections["container"]=$this->load->view("usuario/perfil",$data,true);
+			$sections["estilo"]='';
 			$main["body"]=$this->load->view($this->views->CONTAINER,$sections,true);
 			if($isLogin==false)
 			{

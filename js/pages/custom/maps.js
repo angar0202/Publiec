@@ -4,8 +4,8 @@ $(document).ready(function() {
 	//basic map
 	var gmap = new GMaps({
         el: '#gmap',
-        lat: -12.043333,
-        lng: -77.028333,
+        lat: -2.1900373530480044,
+        lng: -79.88227844238281,
         zoomControl : true,
         zoomControlOpt: {
             style : 'SMALL',
@@ -23,8 +23,8 @@ $(document).ready(function() {
         },
         error: function(error){
             $.gritter.add({
-                title: 'Error !!!',
-                text: 'Geolocation failed: '+error.message,
+                title: 'Error Geolocalización',
+                text: 'Fallo Geolocalización: '+error.message,
                 close_icon: 'en-cross',
                 icon: 'ec-location',
                 class_name: 'error-notice'
@@ -32,8 +32,8 @@ $(document).ready(function() {
         },
         not_supported: function(){
             $.gritter.add({
-                title: 'Error !!!',
-                text: 'Your browser do not support geolocation',
+                title: 'Error Geolocalización',
+                text: 'Su navegador no soporta Geolocalización',
                 close_icon: 'en-cross',
                 icon: 'ec-location',
                 class_name: 'error-notice'
@@ -41,8 +41,8 @@ $(document).ready(function() {
         },
         always: function(){
             $.gritter.add({
-                title: 'Done !!!',
-                text: 'Your location is detected',
+                title: 'Geolocalización',
+                text: 'Su ubicación actual fue encontrada',
                 close_icon: 'en-cross',
                 icon: 'ec-location',
                 class_name: 'success-notice'
@@ -69,19 +69,94 @@ $(document).ready(function() {
         event.preventDefault();
       }
     });
+GetNegocios();
+    function GetNegocios(){
+        var url= baseURL() + "home/mapa"; 
+        $.getJSON( url , function( negocio ) {            
+            for (var i = negocio.length - 1; i >= 0; i--) {
+                var descripcion=negocio[i].DescripcionNegocio;
+                var max=50;
+                descripcion=descripcion.substring(0, 50);
+                if(descripcion.length>=50){
+                    descripcion=descripcion+"...";
+                }
+                var estilo="btn btn-default btn-xs mr5 mb10";
+                if(negocio[i].Favoritos>0){
+                    estilo="btn btn-success btn-xs mr5 mb10";
+                }
+                var infoWindowContent = [
+                '<b>'+negocio[i].Nombre+'</b></br>',
+                '<p style="max-width:250px;text-align: justify;text-justify: inter-word;">'+descripcion+'<br/></p>',
+                '<div style="margin:0 auto;text-align: center;">',
+                '<img src="'+baseURL()+negocio[i].ImagenNegocio+'" style="width:128px; height:128px;"/>',
+                '</div><br/>',
+                '<input type="button" id="AgregarFavoritos" name="'+negocio[i].NegocioID+'" class="'+estilo+'" value="+'+negocio[i].Favoritos+'"/>',
+                '<input type="button" id="VerPerfil" value="Ir al perfil" name="'+negocio[i].NegocioID+'" class="btn btn-default btn-xs mr5 mb10"/>'
+                ].join("");
+                gmap.addMarker({
+                  lat: negocio[i].Latitud,
+                  lng: negocio[i].Longitud,
+                  title: negocio[i].Nombre,
+                  infoWindow: {
+                    content:infoWindowContent
+                  }
+                  /*click: function(e) {
+                    alert('You clicked in this marker');
+                  }*/
+                });
+            };
+        });
+    }
 
-    gmap.addMarker({
-      lat: -2.189533465988526,
-      lng: -79.94374394416809,
-      title: 'Mi primer Negocio en Publi-Com',
-      infoWindow: {
-          content: '<b>Negocio de Prueba</b></br><p>mi primera empresa registrada.<br/></p><div style="margin:0 auto;text-align: center;"><img src="http://50.23.173.8/upload/media/pics/AUGUST2013/8102750Tienda.jpg" style="width:128px; height:128px;"/></div><br/><input type="button" class="btn btn-primary btn-xs mr5 mb10" value="Agregar a Favorito"/><input type="button" value="Recomendar" class="btn btn-warning btn-xs mr5 mb10"/>'
-      },
-      /*click: function(e) {
-        alert('You clicked in this marker');
-      }*/
-    });
+    $(document).on('click', '#AgregarFavoritos', function(e){
+       e.preventDefault();
+       var negocioID=$(this).attr('name');        
+       var numero="+0";
+                $.ajax({
+                 type: "POST",
+                 url: baseURL() + "home/agregarNegocioFavorito", 
+                 data: {
+                    negocioID: negocioID
+                 },
+                 dataType: "text",  
+                 cache:false,
+                 success: 
+                      function(data){                        
+                        var info=$.parseJSON(data);
+                        if(info.resultado==0){                          
+                            $.gritter.add({
+                                title: 'Usuario',
+                                text: info.mensaje,
+                                time: '',
+                                close_icon: 'l-arrows-remove s16',
+                                icon: 'glyphicon glyphicon-user',
+                                class_name: 'error-notice'
+                            }); 
+                        }
+                        numero=info.numero;                        
+                      },
+                 error: function(xhr, ajaxOptions, thrownError){
+                                              alert(xhr.status);
+                                              alert(xhr.responseText);
+                                              alert(thrownError);
+                    }
+                  });
+                $(this).effect('highlight', {}, 500, function(){
+                    $(this).val("+"+String(numero));
+                    if(numero>0){
+                        $(this).attr('class','btn btn-success btn-xs mr5 mb10');    
+                    }else{
+                        $(this).attr('class','btn btn-default btn-xs mr5 mb10');
+                    }
+                });             
+            });
 
+            $(document).on('click', '#VerPerfil', function(e){
+                var NegocioID=$(this).attr('name');              
+                $.redirect(baseURL()+'negocio/perfil', {'NegocioID': NegocioID});
+            });
 
-
+            function baseURL(){
+                return window.location.origin+'/Publiec/';
+            }
 });

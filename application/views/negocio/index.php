@@ -61,7 +61,7 @@
                                                     <tr id="<?=$item->NegocioID?>" class="<?=$estilo?>" target="<?=$item->Activo?>">
                                                         <td>
                                                             <div class="toggle-custom">
-                                                            <label class="toggle" data-on="ON" data-off="OFF">
+                                                            <label class="toggle" data-on="Si" data-off="No">
                                                                 <input type="checkbox" id="checkbox-toggle" name="checkbox-toggle" checked>
                                                                 <span class="button-checkbox"></span>
                                                             </label>                                                            
@@ -93,7 +93,7 @@
                                                                     </a>
                                                                 </li>
                                                                 <li>
-                                                                    <a href="#">Ver Información</a>
+                                                                    <a href="#" id="perfilNegocio">Ver Información</a>
                                                                 </li>
                                                                 <li class="divider"></li>
                                                                 <li>
