@@ -2,6 +2,7 @@ $(document).ready(function() {
 	var negocio_id=0;
 	Dropzone.autoDiscover = false;
 	var imagenes=0;
+	var dias=["lunes","martes","miercoles","jueves","viernes","sabado","domingo"];
 	/*Imagenes de Negocio*/	
               var myDropzone = new Dropzone("#my-awesome-dropzone",{
               		autoProcessQueue: false,
@@ -28,7 +29,7 @@ $(document).ready(function() {
 										var contacto=getContacto($(this).attr('id'));
 										negocio.contactos[negocio.contactos.length]=contacto;
 									});
-									var negocioJson=JSON.stringify(negocio);									
+									var negocioJson=JSON.stringify(negocio);
 									/*Guardar Informacion*/
 									var base_url = baseURL();
 									$.ajax({
@@ -75,7 +76,7 @@ $(document).ready(function() {
 			        swal("Registro Completo!", "Se completo con exito el registro del Negocio", "success");
 			        setInterval(function () {
                             window.location.replace(baseURL()+'negocio/index');
-                    },4000);			        
+                    },2000);			        
 			      }
 			  });
 			  myDropzone.on("sending", function(file, xhr, formData) {
@@ -116,6 +117,83 @@ $(document).ready(function() {
 	}
 
 	$('.select2').select2({placeholder: 'Seleccionar categorias'});
+	//------------- Timepicker -------------//
+    $('#lunes_inicio').timepicker({
+    	upArrowStyle: 'fa fa-angle-up',
+    	downArrowStyle: 'fa fa-angle-down',
+    	showMeridian: false,
+    });
+    $('#lunes_fin').timepicker({
+    	upArrowStyle: 'fa fa-angle-up',
+    	downArrowStyle: 'fa fa-angle-down',
+    	showMeridian: false,
+    });
+
+    $('#martes_inicio').timepicker({
+    	upArrowStyle: 'fa fa-angle-up',
+    	downArrowStyle: 'fa fa-angle-down',
+    	showMeridian: false,
+    });
+    $('#martes_fin').timepicker({
+    	upArrowStyle: 'fa fa-angle-up',
+    	downArrowStyle: 'fa fa-angle-down',
+    	showMeridian: false,
+    });
+
+    $('#miercoles_inicio').timepicker({
+    	upArrowStyle: 'fa fa-angle-up',
+    	downArrowStyle: 'fa fa-angle-down',
+    	showMeridian: false,
+    });
+    $('#miercoles_fin').timepicker({
+    	upArrowStyle: 'fa fa-angle-up',
+    	downArrowStyle: 'fa fa-angle-down',
+    	showMeridian: false,
+    });
+    $('#jueves_inicio').timepicker({
+    	upArrowStyle: 'fa fa-angle-up',
+    	downArrowStyle: 'fa fa-angle-down',
+    	showMeridian: false,
+    });
+    $('#jueves_fin').timepicker({
+    	upArrowStyle: 'fa fa-angle-up',
+    	downArrowStyle: 'fa fa-angle-down',
+    	showMeridian: false,
+    });
+
+    $('#viernes_inicio').timepicker({
+    	upArrowStyle: 'fa fa-angle-up',
+    	downArrowStyle: 'fa fa-angle-down',
+    	showMeridian: false,
+    });
+    $('#viernes_fin').timepicker({
+    	upArrowStyle: 'fa fa-angle-up',
+    	downArrowStyle: 'fa fa-angle-down',
+    	showMeridian: false,
+    });
+
+    $('#sabado_inicio').timepicker({
+    	upArrowStyle: 'fa fa-angle-up',
+    	downArrowStyle: 'fa fa-angle-down',
+    	showMeridian: false,
+    });
+
+    $('#sabado_fin').timepicker({
+    	upArrowStyle: 'fa fa-angle-up',
+    	downArrowStyle: 'fa fa-angle-down',
+    	showMeridian: false,
+    });
+
+    $('#domingo_inicio').timepicker({
+    	upArrowStyle: 'fa fa-angle-up',
+    	downArrowStyle: 'fa fa-angle-down',
+    	showMeridian: false,
+    });
+    $('#domingo_fin').timepicker({
+    	upArrowStyle: 'fa fa-angle-up',
+    	downArrowStyle: 'fa fa-angle-down',
+    	showMeridian: false,
+    });
 
 	function getUbicacion(codigo){		
 		var id = codigo.replace("ubicacion_", "");
@@ -360,7 +438,13 @@ $(document).ready(function() {
 		function crearEditar(){
 		    return '<button id="editar" class="btn btn-default">editar</button>';
 		}
-	/*UBICACIONES*/
+
+	/***********************************************************
+	************************************************************
+	-------------------------UBICACIONES-------------------------
+	*************************************************************
+	*************************************************************/
+	
 	var ubicaciones = []; 
 	var ubicacionEditar=null;
 
@@ -371,6 +455,91 @@ $(document).ready(function() {
 		this.descripcion="";
 		this.latitud="";
 		this.longitud="";
+		this.sector="";
+		this.horario=[];
+	}
+
+	function Horario(){
+		this.dia="";
+		this.hora_inicio="";
+		this.hora_fin="";
+		this.minuto_inicio="";
+		this.minuto_fin="";
+	}
+
+	function GetHorario(dia){
+			var horario=new Horario();
+			if(dia=="lunes"){
+				horario.dia=1;
+			}else if(dia=="martes"){
+				horario.dia=2;
+			}else if(dia=="miercoles"){
+				horario.dia=3;
+			}else if(dia=="jueves"){
+				horario.dia=4;
+			}else if(dia=="viernes"){
+				horario.dia=5;
+			}else if(dia=="sabado"){
+				horario.dia=6;
+			}else if(dia=="domingo"){
+				horario.dia=7;
+			}
+			var inicio=$("#"+dia+"_inicio").val();
+			var fin=$("#"+dia+"_fin").val();
+			setHora(horario,inicio,true);
+			setHora(horario,fin,false);
+			return horario;
+	}
+
+	function setHora(horario,data,inicio){
+		if($.trim(data).length>0){
+				var tiempo=data.split(":");
+				if(tiempo.length>0){
+					if(tiempo.length>1){					
+							if(inicio){
+							horario.hora_inicio=tiempo[0];					
+							horario.minuto_inicio=tiempo[1];						
+						}else{
+							horario.hora_fin=tiempo[0];					
+							horario.minuto_fin=tiempo[1];					
+						}
+					}else{
+						if(tiempo1[0]>24){
+							if(inicio){
+							horario.minuto_inicio=tiempo[0];
+							horario.hora_inicio=0;	
+						}else{
+							horario.minuto_fin=tiempo[0];
+							horario.hora_fin=0;
+						}
+						}else{
+							if(inicio){
+							horario.hora_inicio=tiempo[0];
+							horario.minuto_inicio=0;	
+						}else{
+							horario.hora_fin=tiempo[0];
+							horario.minuto_fin=0;
+						}
+						}
+					}
+				}else{
+					if(inicio){
+					horario.minuto_inicio=0;
+					horario.hora_inicio=0;	
+				}else{
+					horario.minuto_fin=0;
+					horario.hora_fin=0;					
+				}
+				}
+			}else{
+				if(inicio){
+					horario.minuto_inicio=0;
+					horario.hora_inicio=0;	
+				}else{
+					horario.minuto_fin=0;
+					horario.hora_fin=0;					
+				}
+			}
 	}
 
 	function MensajeErrorUbicacion(value){
@@ -406,11 +575,21 @@ $(document).ready(function() {
 				$("#UbicacionDireccionTextbox").focus();
 				return;	
 			}
+			if($.trim($("#sector option:selected" ).text())==""){
+				MensajeErrorUbicacion("Seleccione el sector de su negocio");
+				$("#sector").focus();
+				return;
+			}
 			if(ubicacionEditar==null){
 				AgregarUbicacion();	
 			}
 			else
 			{
+				ubicacionEditar.horario=[];
+				for (var i = 0; i <= dias.length - 1; i++) {
+					ubicacionEditar.horario[ubicacionEditar.horario.length]=GetHorario(dias[i]);
+				};
+				ubicacionEditar.sector=$("#sector option:selected" ).text();
 				ubicacionEditar.direccion=$("#UbicacionDireccionTextbox").val();
 				ubicacionEditar.descripcion=$("#UbicacionDescripcionTextbox").val();
 				ubicacionEditar.longitud=$("#UbicacionLongitudTextbox").val();
@@ -481,6 +660,10 @@ $(document).ready(function() {
 			$("#UbicacionLongitudTextbox").val("");
 			gmap.removeMarkers();
 			$("#UbicacionDireccionTextbox").focus();
+			for (var i = dias.length - 1; i >= 0; i--) {
+				$("#"+dias[i]+"_inicio").val('');
+				$("#"+dias[i]+"_fin").val('');
+			};	
 		}
 
 		function SetUbicacion(Ubicacion){
@@ -488,6 +671,11 @@ $(document).ready(function() {
 			$("#UbicacionDescripcionTextbox").val(Ubicacion.descripcion);
 			$("#UbicacionLatitudTextbox").val(Ubicacion.latitud);
 			$("#UbicacionLongitudTextbox").val(Ubicacion.longitud);
+			for (var i = 0; i <= dias.length - 1; i++) {
+				$("#"+dias[i]+"_inicio").val(Ubicacion.horario[i].hora_inicio+":"+Ubicacion.horario[i].minuto_inicio);
+				$("#"+dias[i]+"_fin").val(Ubicacion.horario[i].hora_fin+":"+Ubicacion.horario[i].minuto_fin);
+			};
+			$("#sector").val(Ubicacion.sector)
 			gmap.removeMarkers();
 			gmap.addMarker({
 		        lat: Ubicacion.latitud,
@@ -505,6 +693,7 @@ $(document).ready(function() {
 			ubicacion.latitud=$("#UbicacionLatitudTextbox").val();
 			ubicacion.longitud=$("#UbicacionLongitudTextbox").val();
 			ubicacion.id=ubicaciones.length;
+			ubicacion.sector=$("#sector option:selected" ).text();
 			var datos=$.trim($('#ubicacionesTable tbody').html());
 			var fila = rowUbicacion(ubicacion);
             if(datos!='')
@@ -515,6 +704,10 @@ $(document).ready(function() {
 		    {
 		    	$('#ubicacionesTable tbody').append(fila);        
 		    }
+		    ubicacion.horario=[];
+			for (var i = 0; i <= dias.length - 1; i++) {
+				ubicacion.horario[ubicacion.horario.length]=GetHorario(dias[i]);
+			};
 		    ubicaciones[ubicaciones.length]=ubicacion;
 		    clearUbicacion();
         }

@@ -112,6 +112,9 @@
                                         </div>
                                         <div class="panel-body">
                                             <form class="form-horizontal" role="form" id="UbicacionForm">
+                                                <div class="page-header">
+                                                    <h5>Información de Ubicacion</h5>
+                                                </div>
                                                 <div class="form-group">
                                                     <div class="col-lg-12">
                                                         <div class="row">
@@ -125,6 +128,27 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <div class="col-lg-12">
+                                                        <input id="UbicacionDescripcionTextbox" type="text" class="form-control" placeholder="Descripcion">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-lg-2 col-md-3 control-label" for="">Sectores</label>
+                                                    <div class="col-lg-10 col-md-9">
+                                                        <select class="fancy-select form-control" id="sector">
+                                                            <option value="Norte" selected>Norte</option>
+                                                            <option value="Sur">Sur</option>
+                                                            <option value="Este">Este</option>
+                                                            <option value="Oeste">Oeste</option>
+                                                            <option value="Sureste">Sureste</option>
+                                                            <option value="Suroeste">Suroeste</option>
+                                                            <option value="Noreste">Noreste</option>
+                                                            <option value="Noroeste">Noroeste</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!-- End .form-group  -->
+                                                <div class="form-group">
+                                                    <div class="col-lg-12">
                                                         <div class="row" style="margin:0 auto;text-align: center;">
                                                             <!-- Start .row -->
                                                                 <div id="UbicacionMapa" style="width:100%;height:250px;"></div>                                                            
@@ -132,13 +156,7 @@
                                                         <!-- End .row -->
                                                     </div>
                                                 </div>
-                                                <!-- End .form-group  -->
-                                                <div class="form-group">
-                                                    <div class="col-lg-12">
-                                                        <input id="UbicacionDescripcionTextbox" type="text" class="form-control" placeholder="Descripcion">
-                                                    </div>
-                                                </div>
-                                                <!-- End .form-group  -->
+                                                <!-- End .form-group  -->                                                
                                                 <div class="form-group">
                                                     <div class="col-lg-12">
                                                         <div class="row">
@@ -151,6 +169,102 @@
                                                             </div>
                                                         </div>
                                                         <!-- End .row -->
+                                                    </div>
+                                                </div>
+                                                <div class="page-header">
+                                                    <h5>Horarios de Atención</h5>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-lg-2 col-md-4 control-label" for="">Lunes</label>
+                                                    <div class="col-lg-5 col-md-4">
+                                                        <div class="input-group bootstrap-timepicker">
+                                                            <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                                            <input id="lunes_inicio" type="text" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-5 col-md-4">
+                                                        <div class="input-group bootstrap-timepicker">
+                                                            <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                                            <input id="lunes_fin" type="text" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <label class="col-lg-2 col-md-4 control-label" for="">Martes</label>
+                                                    <div class="col-lg-5 col-md-4">
+                                                        <div class="input-group bootstrap-timepicker">
+                                                            <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                                            <input id="martes_inicio" type="text" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-5 col-md-4">
+                                                        <div class="input-group bootstrap-timepicker">
+                                                            <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                                            <input id="martes_fin" type="text" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <label class="col-lg-2 col-md-4 control-label" for="">Miercoles</label>
+                                                    <div class="col-lg-5 col-md-4">
+                                                        <div class="input-group bootstrap-timepicker">
+                                                            <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                                            <input id="miercoles_inicio" type="text" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-5 col-md-4">
+                                                        <div class="input-group bootstrap-timepicker">
+                                                            <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                                            <input id="miercoles_fin" type="text" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <label class="col-lg-2 col-md-4 control-label" for="">Jueves</label>
+                                                    <div class="col-lg-5 col-md-4">
+                                                        <div class="input-group bootstrap-timepicker">
+                                                            <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                                            <input id="jueves_inicio" type="text" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-5 col-md-4">
+                                                        <div class="input-group bootstrap-timepicker">
+                                                            <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                                            <input id="jueves_fin" type="text" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <label class="col-lg-2 col-md-4 control-label" for="">Viernes</label>
+                                                    <div class="col-lg-5 col-md-4">
+                                                        <div class="input-group bootstrap-timepicker">
+                                                            <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                                            <input id="viernes_inicio" type="text" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-5 col-md-4">
+                                                        <div class="input-group bootstrap-timepicker">
+                                                            <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                                            <input id="viernes_fin" type="text" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <label class="col-lg-2 col-md-4 control-label" for="">Sábado</label>
+                                                    <div class="col-lg-5 col-md-4">
+                                                        <div class="input-group bootstrap-timepicker">
+                                                            <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                                            <input id="sabado_inicio" type="text" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-5 col-md-4">
+                                                        <div class="input-group bootstrap-timepicker">
+                                                            <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                                            <input id="sabado_fin" type="text" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <label class="col-lg-2 col-md-4 control-label" for="">Domingo</label>
+                                                    <div class="col-lg-5 col-md-4">
+                                                        <div class="input-group bootstrap-timepicker">
+                                                            <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                                            <input id="domingo_inicio" type="text" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-5 col-md-4">
+                                                        <div class="input-group bootstrap-timepicker">
+                                                            <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                                            <input id="domingo_fin" type="text" class="form-control">
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <!-- End .form-group  -->
@@ -198,9 +312,7 @@
                                 <!-- End .panel -->
                             </div>
                             <!-- col-lg-6 end here -->              
-                        </div>
-
-                        
+                        </div>                        
                         <div class="row">
                             <div class="col-md-6 sortable-layout">
                                 <div class="panel panel-default plain toggle">

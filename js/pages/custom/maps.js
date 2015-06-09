@@ -17,38 +17,43 @@ $(document).ready(function() {
         overviewMapControl: false
     });
 
-     GMaps.geolocate({
-        success: function(position){
-          gmap.setCenter(position.coords.latitude, position.coords.longitude);
-        },
-        error: function(error){
-            $.gritter.add({
-                title: 'Error Geolocalización',
-                text: 'Fallo Geolocalización: '+error.message,
-                close_icon: 'en-cross',
-                icon: 'ec-location',
-                class_name: 'error-notice'
-            });
-        },
-        not_supported: function(){
-            $.gritter.add({
-                title: 'Error Geolocalización',
-                text: 'Su navegador no soporta Geolocalización',
-                close_icon: 'en-cross',
-                icon: 'ec-location',
-                class_name: 'error-notice'
-            });
-        },
-        always: function(){
-            $.gritter.add({
-                title: 'Geolocalización',
-                text: 'Su ubicación actual fue encontrada',
-                close_icon: 'en-cross',
-                icon: 'ec-location',
-                class_name: 'success-notice'
-            });
-        }
-    });
+    Geolocalizar();
+
+    function Geolocalizar(){
+         GMaps.geolocate({
+            success: function(position){
+              gmap.setCenter(position.coords.latitude, position.coords.longitude);
+            },
+            error: function(error){
+                $.gritter.add({
+                    title: 'Error Geolocalización',
+                    text: 'Fallo Geolocalización: '+error.message,
+                    close_icon: 'en-cross',
+                    icon: 'ec-location',
+                    class_name: 'error-notice'
+                });
+            },
+            not_supported: function(){
+                $.gritter.add({
+                    title: 'Error Geolocalización',
+                    text: 'Su navegador no soporta Geolocalización',
+                    close_icon: 'en-cross',
+                    icon: 'ec-location',
+                    class_name: 'error-notice'
+                });
+            },
+            always: function(){
+                $.gritter.add({
+                    title: 'Geolocalización',
+                    text: 'Su ubicación actual fue encontrada',
+                    close_icon: 'en-cross',
+                    icon: 'ec-location',
+                    class_name: 'success-notice'
+                });
+            }
+        });   
+    }
+     
     
     $( "#direccion" ).keydown(function( event ) {
       if ( event.which == 13 ) {
@@ -84,6 +89,7 @@ GetNegocios();
                 if(negocio[i].Favoritos>0){
                     estilo="btn btn-success btn-xs mr5 mb10";
                 }
+                var icon = baseURL()+negocio[i].IconoNegocio;
                 var infoWindowContent = [
                 '<b>'+negocio[i].Nombre+'</b></br>',
                 '<p style="max-width:250px;text-align: justify;text-justify: inter-word;">'+descripcion+'<br/></p>',
@@ -99,6 +105,10 @@ GetNegocios();
                   title: negocio[i].Nombre,
                   infoWindow: {
                     content:infoWindowContent
+                  },
+                  icon : {
+                    size : new google.maps.Size(32, 32),
+                    url : icon
                   }
                   /*click: function(e) {
                     alert('You clicked in this marker');
@@ -149,6 +159,22 @@ GetNegocios();
                         $(this).attr('class','btn btn-default btn-xs mr5 mb10');
                     }
                 });             
+            });
+
+            gmap.addControl({
+              position: 'top_right',
+              content: 'Geolocalizar',
+              style: {
+                margin: '5px',
+                padding: '1px 6px',
+                border: 'solid 1px #717B87',
+                background: '#fff'
+              },
+              events: {
+                click: function(){
+                  Geolocalizar();
+                }
+              }
             });
 
             $(document).on('click', '#VerPerfil', function(e){

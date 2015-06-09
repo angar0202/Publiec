@@ -59,10 +59,23 @@ class NegocioUbicacionModel extends MasterModel {
 	public function obtenerUbicaciones(){
 		$sql="select nu.*,n.Nombre,n.Descripcion as DescripcionNegocio,
 			(select ni.Url from negocioimagen ni where ni.NegocioID = n.NegocioID limit 1) as ImagenNegocio,
-			(select count(nf.NegocioFavoritoID) from negociofavorito nf where nf.NegocioID = n.NegocioID) as Favoritos
+			(select count(nf.NegocioFavoritoID) from negociofavorito nf where nf.NegocioID = n.NegocioID) as Favoritos,
+      ifnull(ifnull((select tn.UrlHabilitado
+      from negociocategoria nc
+      inner join categoria c on nc.CategoriaID=c.CategoriaID
+      inner join tiponegocio tn on tn.TipoNegocioID = c.CategoriaID
+      inner join negocioubicacion u on u.NegocioID = nc.NegocioID
+      inner join negociohorario nh on nh.NegocioUbicacionID = u.NegocioUbicacionID
+      where current_time between maketime(nh.HoraInicio,nh.MinutoInicio,0) and maketime(nh.HoraFin,nh.MinutoFin,0)
+      and weekday(current_date)+1=nh.Dia
+      and nc.NegocioID = nu.NegocioID and tn.UrlDeshabilitado is not null limit 1),(select tn.UrlDeshabilitado from negocioubicacion nu 
+      inner join negociocategoria nc on nc.NegocioID = nu.NegocioID
+      inner join categoria c on nc.CategoriaID=c.CategoriaID
+      inner join tiponegocio tn on tn.TipoNegocioID = c.CategoriaID 
+      where nc.NegocioID = n.NegocioID and tn.UrlDeshabilitado is not null limit 1)),'default.png') as IconoNegocio
 			from negocioubicacion nu
-			inner join negocio n on nu.NegocioID = n.NegocioID
-			where n.Activo=1";
+			inner join negocio n on nu.NegocioID = n.NegocioID			
+      where n.Activo=1";
 		return $this->db->query($sql)->result();
 	}
 

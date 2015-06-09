@@ -25,6 +25,7 @@ class NegocioModel extends MasterModel {
 					);
 				   $this->db->insert('negocio',$data);
 				   $negocio_id = $this->db->insert_id();
+				   
 				   /*Ubicaciones del Negocio*/
 				   $ubicaciones=array();
 				   foreach ($negocio->ubicaciones as $u) {
@@ -33,12 +34,23 @@ class NegocioModel extends MasterModel {
 					   'Direccion' => $u->direccion ,
 					   'Descripcion' => $u->descripcion ,
 					   'Latitud' => $u->latitud,
-					   'Longitud' => $u->longitud
+					   'Longitud' => $u->longitud,
+					   'Sector' => $u->sector
 						);
-					   $ubicaciones[]=$ubicacion;
-				   }
-				   if(count($ubicaciones)>0){
-				   		$this->db->insert_batch('negocioubicacion',$ubicaciones);	
+					    $ubicaciones[]=$ubicacion;
+						$this->db->insert('negocioubicacion',$ubicacion);
+				   		$ubicacion_id = $this->db->insert_id();
+					    foreach ($u->horario as $h) {
+							$cal=array(
+								'NegocioUbicacionID'=>$ubicacion_id,
+								'Dia' => $h->dia, 
+								'HoraInicio' => $h->hora_inicio,
+								'HoraFin' => $h->hora_fin,
+								'MinutoInicio' => $h->minuto_inicio,
+								'MinutoFin' => $h->minuto_fin,
+								);
+							$this->db->insert('NegocioHorario',$cal);
+						}
 				   }
 
 				   $categorias= array();

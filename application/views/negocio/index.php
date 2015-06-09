@@ -46,8 +46,7 @@
                                     <div class="panel-body">
                                         <table class="table table-bordered" id="listaNegocios">
                                             <thead>
-                                                <tr>
-                                                <th class="per10">Atendiendo</th>
+                                                <tr>                                                
                                                     <th class="per25">Nombre</th>
                                                     <th class="per40">Descripcion</th>
                                                     <th class="per10"># Ubicaciones</th>
@@ -59,14 +58,6 @@
                                                 foreach ($negocios as $item){?>
                                                     <? if($item->Activo==1){$estilo="activo";}else{$estilo="desactivado";} ?>
                                                     <tr id="<?=$item->NegocioID?>" class="<?=$estilo?>" target="<?=$item->Activo?>">
-                                                        <td>
-                                                            <div class="toggle-custom">
-                                                            <label class="toggle" data-on="Si" data-off="No">
-                                                                <input type="checkbox" id="checkbox-toggle" name="checkbox-toggle" checked>
-                                                                <span class="button-checkbox"></span>
-                                                            </label>                                                            
-                                                            </div>
-                                                        </td>
                                                         <td><?=$item->Nombre?></td>
                                                         <td><?=$item->Descripcion?></td>
                                                         <td><?=$item->Ubicaciones?></td>

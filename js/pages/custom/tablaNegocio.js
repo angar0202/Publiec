@@ -36,7 +36,7 @@
 		});
 		$('#listaNegocios').on('click', '#eliminarNegocio', function() {
 			var $row = $(this).closest("tr");
-			$tds = $row.find("td:nth-child(2)");
+			$tds = $row.find("td:nth-child(1)");
 			$.each($tds, function() {
 		        var descripcion=$(this).text();
 		        bootbox.confirm("¿Esta seguro que desea eliminar al Negocio '"+descripcion+"', este proceso es irreversible?", function(result) {

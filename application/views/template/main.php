@@ -96,6 +96,8 @@
         <script src="<?=site_url()?>plugins/ui/notify/jquery.gritter.js"></script>
         <script src="<?=site_url()?>plugins/ui/bootstrap-sweetalert/sweet-alert.js"></script>
         <script src="<?=site_url()?>plugins/misc/gmaps/gmaps.js"></script>
+        <script src="<?=base_url()?>plugins/forms/fancyselect/fancySelect.js"></script>
+        <script src="<?=base_url()?>plugins/forms/bootstrap-timepicker/bootstrap-timepicker.js"></script>
         <script src="<?=$url?>js/pages/custom/general.js"></script>
         <script src="<?=base_url()?>js/jquery.redirect.js"></script>
         <?=$plugins?>
