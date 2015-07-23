@@ -11,6 +11,7 @@ class Usuario extends CI_Controller {
         $this->load->model('NegocioModel','Negocio');   
         $this->load->model('UsuarioModel','Usuario');
         $this->load->model('ValidacionModel','Validacion');
+        $this->load->model('NegocioPublicacionModel');
     }
 
     public function actualizar(){
@@ -18,10 +19,7 @@ class Usuario extends CI_Controller {
 		if($isLogin)
 		{
 			$resultado=false;
-			/*$_POST["nombreUsuario"]="agarcia";
-			$_POST["nombreCompleto"]="Andres Garcia";
-			$_POST["correo"]="angar_0202@gmail.com";
-			$_POST["cambiarPassword"]="false";*/
+			$mensaje="";
 			$nombreCompleto=$this->input->post("nombreCompleto");
 			$nombreUsuario=$this->input->post("nombreUsuario");
 			$correo=$this->input->post("correo");
@@ -32,7 +30,8 @@ class Usuario extends CI_Controller {
 			if($this->input->post("nombreUsuario")!=""){
 				$usuarioID=$this->session->userdata("id_usuario");
 				$usuario=$this->Usuario->getById($usuarioID);
-				if($usuario->Password!=md5($passwordActual) && $cambiarPassword=="true"){
+				if($usuario->Password!=md5($passwordActual) && $cambiarPassword=="true")
+				{
 					$mensaje="La contraseña actual no coincide";
 					$resultado=false;
 				}
@@ -53,9 +52,7 @@ class Usuario extends CI_Controller {
 			}else{
 				$mensaje="Datos de usuario no validos para actualizar";
 			}
-			
-			$mensaje=json_encode(array('mensaje' => $mensaje,'resultado'=>$resultado));
-    		echo $mensaje;
+    		echo json_encode(array('mensaje' => $mensaje,'resultado'=>$resultado));
 		}
     }
     public function perfil(){
@@ -69,7 +66,9 @@ class Usuario extends CI_Controller {
 			$menu["menu_administrador"]="";
 			$control["menu_usuario"]=$this->load->view($this->views->MENU_USUARIO,$menu,true);
 			$sections["menu"]=$this->load->view($this->views->MENU,$control,true);
-			$sections["publicaciones"]=$this->load->view($this->views->ACTIVIDAD_NEGOCIOS,null,true);		
+			$data["negocios"]=$this->Negocio->listaUltimosNegocio();
+			$data["publicaciones"]=$this->NegocioPublicacionModel->listaUltimasPublicaciones();
+			$sections["publicaciones"]=$this->load->view($this->views->ACTIVIDAD_NEGOCIOS,$data,true);		
 			$info["info_negocio"]="";//$this->load->view($this->views->INFO_NEGOCIO,null,true);			
 			
 			$usuario=$this->Usuario->getById($this->session->userdata('id_usuario'));

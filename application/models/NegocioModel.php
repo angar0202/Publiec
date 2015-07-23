@@ -204,7 +204,10 @@ class NegocioModel extends MasterModel {
 	public function perfilNegocio($id){
 		$sql="select n.*, 
 		(select count(nu.NegocioUbicacionID) from negocioubicacion nu where nu.NegocioID=n.NegocioID) as ubicaciones,
-		'' categorias,'' as tiposNegocio
+		'' categorias,'' as tiposNegocio,(select count(u.NegocioUbicacionID) from negocioubicacion u 
+      inner join negociohorario nh on nh.NegocioUbicacionID = u.NegocioUbicacionID
+      where current_time between maketime(nh.HoraInicio,nh.MinutoInicio,0) and maketime(nh.HoraFin,nh.MinutoFin,0)
+      and weekday(current_date)+1=nh.Dia and u.NegocioID = n.NegocioID) as Atendiendo
 		from negocio n where n.NegocioID=$id";
 		$query = $this->db->query($sql);
 		if ($query->num_rows() > 0)
@@ -269,6 +272,15 @@ class NegocioModel extends MasterModel {
                             'Descripcion'=>'Ponemos a su disposición: '.$negocio->Descripcion.', nos ubicamos en:'.$ubicaciones);
                $this->db->insert('NegocioPublicacion',$publicacion);
             }
+    }
+
+    public function listaUltimosNegocio(){
+    	$sql="select n.NegocioID, n.Nombre,n.Descripcion,
+		(select ni.Url from negocioimagen ni where ni.NegocioID = n.NegocioID and ni.Url is not null limit 1) as ImagenNegocio,
+		ifnull((select max(np.Fecha) from negociopublicacion np where np.NegocioID = n.NegocioID),n.Fecha) as UltimaPublicacion
+		from negocio n where n.Activo=1 order by UltimaPublicacion desc";
+		$result=$this->db->query($sql);
+		return $result->result();
     }
 
 }

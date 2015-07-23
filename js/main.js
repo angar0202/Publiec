@@ -124,52 +124,5 @@ $(document).ready(function() {
             store.set('fixed-right-sidebar', 1);
         } else {store.set('fixed-right-sidebar', 0);}
     }
-
-    //------------- Template Settings -------------//
-    // (this is example , remove it in production state.)
-
-    //checkbox states 
-    // fixed header
-    if (store.get('fixed-header') == 1 ) {
-        $('#fixed-header-toggle').prop('checked', true);
-    } else {
-        $('#fixed-header-toggle').prop('checked', false);
-    }
-
-    //left sidebar
-    if (store.get('fixed-left-sidebar') == 1 ) {
-        $('#fixed-left-sidebar').prop('checked', true);
-    } else {
-        $('#fixed-left-sidebar').prop('checked', false);
-    }
-
-    //right sidebar
-    if (store.get('fixed-right-sidebar') == 1 ) {
-        $('#fixed-right-sidebar').prop('checked', true);
-    } else {
-        $('#fixed-right-sidebar').prop('checked', false);
-    }
-
-    //check magic access methods.
-    $('#fixed-header-toggle').on('change', function () {
-        if(this.checked) {
-            adminObj.fixedHeader(true);
-        } else {
-            adminObj.fixedHeader(false);
-        }
-    });
-    $('#fixed-left-sidebar').on('change', function () {
-        if(this.checked) {
-            adminObj.fixedSidebar('left');
-        } else {
-            adminObj.removeFixedSidebar('left');
-        }
-    });
-    $('#fixed-right-sidebar').on('change', function () {
-        if(this.checked) {
-            adminObj.fixedSidebar('right');
-        } else {
-            adminObj.removeFixedSidebar('right');
-        }
-    });
+    
 });

@@ -51,13 +51,15 @@ class NegocioUbicacionModel extends MasterModel {
 		}
     	return $mensaje;
 	}
-	public function delete(){
+	
+	public function delete()
+	{
 		$negocioUbicacionID=trim($this->input->post('NegocioUbicacionID'));
 		$this->delete($negocioUbicacionID);
 	}
 
 	public function obtenerUbicaciones(){
-		$sql="select nu.*,n.Nombre,n.Descripcion as DescripcionNegocio,
+		$sql="select nu.*,n.Fecha as FechaCreacion,n.Nombre,n.Descripcion as DescripcionNegocio,
 			(select ni.Url from negocioimagen ni where ni.NegocioID = n.NegocioID limit 1) as ImagenNegocio,
 			(select count(nf.NegocioFavoritoID) from negociofavorito nf where nf.NegocioID = n.NegocioID) as Favoritos,
       ifnull(ifnull((select tn.UrlHabilitado
@@ -75,8 +77,8 @@ class NegocioUbicacionModel extends MasterModel {
       where nc.NegocioID = n.NegocioID and tn.UrlDeshabilitado is not null limit 1)),'default.png') as IconoNegocio
 			from negocioubicacion nu
 			inner join negocio n on nu.NegocioID = n.NegocioID			
-      where n.Activo=1";
-		return $this->db->query($sql)->result();
+      where n.Activo=1 order by FechaCreacion desc";
+		return $this->db->query($sql);
 	}
 
 }

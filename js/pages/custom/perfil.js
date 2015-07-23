@@ -89,17 +89,17 @@ $(document).ready(function() {
 					passwordActual: passwordActual,
 					passwordNuevo: passwordNuevo,
 					passwordConfirma: passwordConfirma,
-					cambiarPassword:cambiarPassword
+					cambiarPassword:cambiarPassword,
 		    	 },
 		         dataType: "text",  
 		         cache:false,
 		         success: 
-		              function(data){
-		                var info=$.parseJSON(data);
+		              function(d){
+		              	var info=$.parseJSON(d);
 		                var className='error-notice';
 		                if(info.resultado==true){
 		                	className='success-notice';
-		                }
+		                }		                
 		                $.gritter.add({
 							title: 'Iniciar Sesión',
 							text: info.mensaje,
@@ -114,7 +114,12 @@ $(document).ready(function() {
 							$("#passwordNuevo").val("");
 							editMode(false);
 						}
-		              }
+		              },
+					error: function(xhr, ajaxOptions, thrownError){
+						alert(xhr.status);
+						alert(xhr.responseText);
+						alert(thrownError);
+					}
 		          });// you have missed this bracket
 	}
 

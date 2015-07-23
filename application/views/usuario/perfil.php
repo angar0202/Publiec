@@ -76,7 +76,7 @@
                                         <h4 class="panel-title bb">Editar datos de usuario</h4>
                                     </div>
                                     <div class="panel-body">
-                                        <div class="form-horizontal group-border stripped" id="UsuarioForm" onload="GetUsuario()">
+                                        <div class="form-horizontal group-border stripped" id="UsuarioForm">
                                             <div class="form-group">
                                                 <label class="col-lg-4 control-label" for="">Nombre Completo</label>
                                                 <div class="col-lg-8">

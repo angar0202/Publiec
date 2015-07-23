@@ -26,7 +26,10 @@ class Negocio extends CI_Controller {
 			$menu["menu_administrador"]="";
 			$control["menu_usuario"]=$this->load->view($this->views->MENU_USUARIO,$menu,true);
 			$sections["menu"]=$this->load->view($this->views->MENU,$control,true);
-			$sections["publicaciones"]=$this->load->view($this->views->ACTIVIDAD_NEGOCIOS,null,true);		
+			
+			$data["negocios"]=$this->NegocioModel->listaUltimosNegocio();
+			$data["publicaciones"]=$this->NegocioPublicacionModel->listaUltimasPublicaciones();
+			$sections["publicaciones"]=$this->load->view($this->views->ACTIVIDAD_NEGOCIOS,$data,true);		
 			$info["info_negocio"]="";//$this->load->view($this->views->INFO_NEGOCIO,null,true);
 			$data["negocios"]=$this->NegocioModel->getByUsuario($this->session->userdata('id_usuario'));
 			$sections["container"]=$this->load->view($this->views->NEGOCIO_INDEX,$data,true);
@@ -39,12 +42,12 @@ class Negocio extends CI_Controller {
 			else
 			{
 				$main["plugins"]=$this->load->view("plugins/tablaNegocio",null,true);
-			}	
+			}
 			$this->load->view($this->views->MAIN,$main);
 		}
 		else
 		{
-			redirect('home','refresh'); 
+			redirect('home','refresh');
 		}
 	}
 	public function create()
@@ -59,7 +62,9 @@ class Negocio extends CI_Controller {
 			$menu["menu_administrador"]="";
 			$control["menu_usuario"]=$this->load->view($this->views->MENU_USUARIO,$menu,true);
 			$sections["menu"]=$this->load->view($this->views->MENU,$control,true);
-			$sections["publicaciones"]=$this->load->view($this->views->ACTIVIDAD_NEGOCIOS,null,true);		
+			$data["negocios"]=$this->NegocioModel->listaUltimosNegocio();
+			$data["publicaciones"]=$this->NegocioPublicacionModel->listaUltimasPublicaciones();
+			$sections["publicaciones"]=$this->load->view($this->views->ACTIVIDAD_NEGOCIOS,$data,true);		
 			$info["info_negocio"]=$this->load->view($this->views->INFO_NEGOCIO,null,true);
 			$data["tiposNegocios"]=$this->TipoNegocioModel->TiposNegociosCategorias();
 			$data["categorias"]=$this->CategoriaModel->GetAll();
@@ -96,13 +101,15 @@ class Negocio extends CI_Controller {
 				$menu["menu_administrador"]="";
 				$control["menu_usuario"]=$this->load->view($this->views->MENU_USUARIO,$menu,true);
 				$sections["menu"]=$this->load->view($this->views->MENU,$control,true);
-				$sections["publicaciones"]=$this->load->view($this->views->ACTIVIDAD_NEGOCIOS,null,true);		
+				$data["negocios"]=$this->NegocioModel->listaUltimosNegocio();
+				$data["publicaciones"]=$this->NegocioPublicacionModel->listaUltimasPublicaciones();
+				$sections["publicaciones"]=$this->load->view($this->views->ACTIVIDAD_NEGOCIOS,$data,true);
 				$info["info_negocio"]="";//$this->load->view($this->views->INFO_NEGOCIO,null,true);
 				/**
 				Informacion a llenar para modificar Negocio
 				*/
-				$data["id"]=$id;
-				$sections["container"]=$this->load->view("negocio/edit",$data,true);
+				$informacion["id"]=$id;
+				$sections["container"]=$this->load->view("negocio/edit",$informacion,true);
 				$sections["estilo"]='';
 				$main["body"]=$this->load->view($this->views->CONTAINER,$sections,true);
 				if($isLogin==false)
@@ -154,6 +161,7 @@ class Negocio extends CI_Controller {
 			redirect('home','refresh'); 
 		}
 	}
+	
 	public function upload()
 	{
     	if (!empty($_FILES)) {
@@ -177,6 +185,7 @@ class Negocio extends CI_Controller {
 			$this->NegocioModel->SegundaPublicacion($negocioID);
 		}
     }
+
     /*public function agregarImagen(){
     	$isLogin=$this->common->isLogin();
 		if($isLogin)
@@ -199,25 +208,37 @@ class Negocio extends CI_Controller {
 	{
 		$isLogin=$this->common->isLogin();
 		if($isLogin){
-			$fileName=$this->input->post("archivo");
-			if($fileName!="")
+			$id=$this->input->post("NegocioImagenID");
+			$negocioID=$this->input->post("NegocioID");
+			$mensaje="";
+			$flag=false;
+			if($id!="")
 			{
-				$targetPath = getcwd().'/uploads/'.md5($this->session->userdata('id_usuario')).'/';
-				$targetFile = $targetPath . $fileName;
-				if(file_exists($targetFile))
-				{
-					$flag=unlink($targetFile);	
-				}
-				else
-				{
-					$flag=true;
-				}
-				echo json_encode(array('resultado'=>$flag));	
+				$cantidad=$this->NegocioImagenModel->GetCount("NegocioID=".$negocioID);
+				if($cantidad>1){
+					$img=$this->NegocioImagenModel->GetById($id);
+					$targetPath = getcwd().$img->Url;
+					$this->NegocioImagenModel->Delete($id);
+					if(file_exists($targetPath))
+					{
+						$flag=unlink($targetPath);
+						if($flag){
+							$mensaje="Fue eliminado correctamente";
+						}
+					}
+					else
+					{
+						$mensaje="La ruta de la imagen esta incorrecta o el archivo ya no existe";
+					}	
+				}else{
+					$mensaje="El negocio debe tener al menos una imagen";
+				}				
 			}
 			else
 			{
-				echo "nombre de archivo no es valido";
+				$mensaje= "nombre de archivo no es valido";
 			}
+			echo json_encode(array('mensaje'=>$mensaje,'resultado'=>$flag));	
 		}
 		else
 		{
@@ -290,16 +311,20 @@ class Negocio extends CI_Controller {
 		}
 	}
 
-	public function perfil()
+	public function perfil($id="")
 	{
-		$id=$this->input->post("NegocioID");
 		if($id==""){
-			show_404();
-			return;
+			$id=$this->input->post("NegocioID");
+			if($id==""){
+				$id=$this->input->get("NegocioID");
+				if($id==""){
+					show_404();
+					return;	
+				}
+			}	
 		}
 		$isLogin=$this->common->isLogin();
 		$isAdmin=false;
-
 		if($isLogin){
 			if($isAdmin){
 				$top["panel_superior"]=$this->load->view($this->views->PANEL_SUPERIOR,null,true);
@@ -329,8 +354,9 @@ class Negocio extends CI_Controller {
 			$control["menu_usuario"]=$this->load->view($this->views->MENU_INVITADO,null,true);
 		}
 		$sections["menu"]=$this->load->view($this->views->MENU,$control,true);		
-		$sections["publicaciones"]=$this->load->view($this->views->ACTIVIDAD_NEGOCIOS,null,true);
-		
+		$data["negocios"]=$this->NegocioModel->listaUltimosNegocio();
+		$data["publicaciones"]=$this->NegocioPublicacionModel->listaUltimasPublicaciones();
+		$sections["publicaciones"]=$this->load->view($this->views->ACTIVIDAD_NEGOCIOS,$data,true);
 		if($isLogin)
 		{
 			$info["info_negocio"]="";//$this->load->view($this->views->INFO_NEGOCIO,null,true);	
@@ -339,11 +365,26 @@ class Negocio extends CI_Controller {
 		{
 			$info["info_negocio"]="";
 		}
-
 		$negocio=$this->NegocioModel->perfilNegocio($id);
-
 		$info["nombreNegocio"]=$negocio->Nombre;
-		$info["atendiendo"]="Estamos Atendiendo!";
+
+		if($negocio->Atendiendo>0){
+			$info["atendiendo"]="Estamos Atendiendo!";	
+		}else{
+			$info["atendiendo"]="Cerrado!";
+		}
+		if($this->session->userdata("id_usuario")!=""){
+			$editar=$this->NegocioModel->GetCount("UsuarioID=".$this->session->userdata("id_usuario"));
+			if($editar==0){
+				$editar=false;
+			}else{
+				$editar=true;
+			}
+		}else{
+			$editar=false;
+		}
+		
+		$info["editar"]=$editar;
 		$info["tiposNegocio"]=$negocio->tiposNegocio;
 		$info["ubicaciones"]=$negocio->ubicaciones;
 		$info["usuario"]=$this->session->userdata('fullname');
@@ -352,8 +393,9 @@ class Negocio extends CI_Controller {
 		$info["descripcion"]=$negocio->Descripcion;
 		$info["categorias"]=$negocio->categorias;
 		$info["publicaciones"]=$this->NegocioPublicacionModel->GetByNegocioId($id);
-
-		$sections["container"]=$this->load->view("negocio/perfil",$info,true);
+		$info["imagenes"]=$this->NegocioImagenModel->GetWhere("NegocioID=$id")->result();
+		$info["negocioID"]=$id;
+	  	$sections["container"]=$this->load->view("negocio/perfil",$info,true);
 		if(!$isLogin)
 		{
 		$sections["container"].=$this->load->view($this->views->REGISTRO,null,true); // Se agrega pantalla modal de REgistro de Usuario
@@ -363,12 +405,23 @@ class Negocio extends CI_Controller {
 		$sections["estilo"]='';
 		$main["body"]=$this->load->view($this->views->CONTAINER,$sections,true);
 		if($isLogin==false){
-			$main["plugins"]=$this->load->view($this->views->MAPAS,null,true);
+			$main["plugins"]="<script src='".base_url()."js/pages/custom/perfilNegocio.js'></script>";
 			$main["plugins"].=$this->load->view($this->views->VENTANA_MODALES,null,true);
+			$main["plugins"].=$this->load->view($this->views->MAPAS,null,true);
 		}else{
-			$main["plugins"]=$this->load->view($this->views->MAPAS,null,true);
+			$main["plugins"]="<script src='".base_url()."js/pages/custom/perfilNegocio.js'></script>";
+			$main["plugins"].=$this->load->view($this->views->MAPAS,null,true);
 		}
-		$this->load->view($this->views->MAIN,$main);		
+		$this->load->view($this->views->MAIN,$main);
 	}
-	
+
+
+	function insertarPublicacion(){
+		$mensaje="insertar publicacion";
+		$flag=true;
+
+		
+
+		echo json_encode(array('mensaje'=>$mensaje,'resultado'=>$flag));
+	}
 }

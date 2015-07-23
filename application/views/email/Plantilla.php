@@ -40,7 +40,7 @@ color: white;
       <tr>
         <td align="left" valign="top" bgcolor="#FFFFFF" style="background-color:#FFFFFF;" width="583" height="118">
         <!--<img src="http://www.e-tractomaq.com/img/header.jpg" width="583" height="118">-->
-        <img src="<?=site_url()?>img/banner.jpg" width="583" height="118">
+        <img src="http://estademoda.net/wp-content/uploads/2015/02/guayaquil_1.png" width="583" height="118">
         </td>
       </tr>
       <tr>

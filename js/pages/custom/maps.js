@@ -179,7 +179,7 @@ GetNegocios();
 
             $(document).on('click', '#VerPerfil', function(e){
                 var NegocioID=$(this).attr('name');              
-                $.redirect(baseURL()+'negocio/perfil', {'NegocioID': NegocioID});
+                $.redirect(baseURL()+'negocio/perfil/'+NegocioID, {'NegocioID': NegocioID});
             });
 
             function baseURL(){

@@ -105,6 +105,7 @@
         <script src="<?=$url?>js/pages/custom/registro.js"></script>
         <script src="<?=$url?>js/pages/custom/recordar.js"></script>
         <script src="<?=$url?>js/pages/custom/login.js"></script>
+        <script src="<?=$url?>js/pages/custom/negocioPublicacion.js"></script>
 
         <script type="text/javascript">
             var sesion=false;

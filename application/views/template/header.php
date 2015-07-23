@@ -20,11 +20,10 @@
                             <span class="sr-only">Ocultar panel</span>
                         </a>
                     </li>
-                    <!--<li>
-                        <a href="#" class="reset-layout tipB" title="Actualizar"><i class="fa fa-history"></i></a>
-                    </li>-->                    
-                </ul>
-                
+                    <li>
+                        <a href="#" class="tipB" data-toggle="modal" data-target="#PublicarModal" title="Publicar"><i class="fa fa-comments"></i></a>
+                    </li>                    
+                </ul>                
                 <!-- / top left nav -->
                 <!-- top right nav -->
                 <ul class="nav navbar-nav navbar-right">

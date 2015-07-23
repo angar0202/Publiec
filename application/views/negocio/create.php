@@ -43,7 +43,7 @@
                                                         <div class="row">
                                                             <!-- Start .row -->
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-left">
-                                                                <input type="text" class="form-control" id="NegocioEmailTextbox" placeholder="Email">                                                                
+                                                                <input type="text" class="form-control" id="NegocioEmailTextbox" placeholder="Email/Sitio Web">                                                                
                                                             </div>
                                                             <!-- Start .row -->
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-left">

@@ -46,7 +46,7 @@ $(document).ready(function() {
 			$("#listaPublicaciones").on('click','#VerPerfil',function()
 		    {
 		    	var NegocioID=$(this).attr('alt');		    	
-		    	$.redirect(baseURL()+'negocio/perfil', {'NegocioID': NegocioID});
+		    	$.redirect(baseURL()+'negocio/perfil/'+NegocioID, {'NegocioID': NegocioID});
 		    });
 		    function baseURL(){
 		    	return window.location.origin+'/Publiec/';

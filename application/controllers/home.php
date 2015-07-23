@@ -11,7 +11,8 @@ class Home extends CI_Controller {
         $this->load->model('NegocioPublicacionModel');
         $this->load->model('PublicacionFavoritaModel');
         $this->load->model('NegocioUbicacionModel');
-        $this->load->model('NegocioFavoritoModel');        
+        $this->load->model('NegocioFavoritoModel');       
+        $this->load->model('NegocioModel');        
     }
 
 	public function index()
@@ -49,7 +50,9 @@ class Home extends CI_Controller {
 		}
 		$sections["menu"]=$this->load->view($this->views->MENU,$control,true);
 		
-		$sections["publicaciones"]=$this->load->view($this->views->ACTIVIDAD_NEGOCIOS,null,true);
+		$data["negocios"]=$this->NegocioModel->listaUltimosNegocio();
+		$data["publicaciones"]=$this->NegocioPublicacionModel->listaUltimasPublicaciones();
+		$sections["publicaciones"]=$this->load->view($this->views->ACTIVIDAD_NEGOCIOS,$data,true);
 		
 		if($isLogin)
 		{
@@ -66,6 +69,7 @@ class Home extends CI_Controller {
 		$sections["container"].=$this->load->view($this->views->REGISTRO,null,true); // Se agrega pantalla modal de REgistro de Usuario
 		$sections["container"].=$this->load->view($this->views->LOGIN,null,true); // Se agrega pantalla modal de LOGIN de Usuario
 		$sections["container"].=$this->load->view($this->views->RECORDAR,null,true); // Se agrega pantalla modal de RECORDAR de Usuario
+		$sections["container"].=$this->load->view("modal/publicacion",null,true);
 		$sections["estilo"]='style="height: 100%; min-height: 100% !important;display: block;"';
 		$main["body"]=$this->load->view($this->views->CONTAINER,$sections,true);
 		if($isLogin==false){
@@ -111,7 +115,8 @@ class Home extends CI_Controller {
 		}
 		$sections["menu"]=$this->load->view($this->views->MENU,$control,true);
 		
-		$sections["publicaciones"]=$this->load->view($this->views->ACTIVIDAD_NEGOCIOS,null,true);
+		
+		$sections["publicaciones"]="";//$this->load->view($this->views->ACTIVIDAD_NEGOCIOS,null,true);
 		
 		if($isLogin)
 		{
@@ -142,8 +147,73 @@ class Home extends CI_Controller {
 		$this->load->view($this->views->MAIN,$main);	
 	}
 
+	public function negocios()
+	{
+		$isLogin=$this->common->isLogin();
+		$isAdmin=false;
+		if($isLogin){
+			if($isAdmin){
+				$top["panel_superior"]=$this->load->view($this->views->PANEL_SUPERIOR,null,true);
+			}else{
+				$top["panel_superior"]="";
+			}
+		}else{
+			$top["panel_superior"]="";
+		}
+		$sections["header"]=$this->load->view($this->views->HEADER,$top,true);
+		
+		if($isLogin)
+		{
+			$usr["nombreUsuario"]=$this->session->userdata('fullname');
+			$control["panel_usuario"]=$this->load->view($this->views->PANEL_USUARIO,$usr,true);
+			if($isAdmin)
+			{
+				$menu["menu_administrador"]=$this->load->view($this->views->MENU_ADMINISTRADOR,null,true);	
+			}
+			else
+			{
+				$menu["menu_administrador"]="";
+			}
+			$control["menu_usuario"]=$this->load->view($this->views->MENU_USUARIO,$menu,true);			
+		}else{
+			$control["panel_usuario"]="";
+			$control["menu_usuario"]=$this->load->view($this->views->MENU_INVITADO,null,true);
+		}
+		$sections["menu"]=$this->load->view($this->views->MENU,$control,true);
+		
+		
+		$sections["publicaciones"]="";//$this->load->view($this->views->ACTIVIDAD_NEGOCIOS,null,true);
+		
+		if($isLogin)
+		{
+			$info["info_negocio"]="";//$this->load->view($this->views->INFO_NEGOCIO,null,true);	
+		}
+		else
+		{
+			$info["info_negocio"]="";
+		}
+		$data["negocios"]=$this->NegocioUbicacionModel->obtenerUbicaciones()->result_array();
+		$info["mapa_publicaciones"]=$this->load->view("home/negocios",$data,true);	
+		$sections["container"]=$this->load->view($this->views->HOME_INDEX,$info,true);
+		if($isLogin==false){
+			$sections["container"].=$this->load->view($this->views->REGISTRO,null,true); // Se agrega pantalla modal de REgistro de Usuario
+			$sections["container"].=$this->load->view($this->views->LOGIN,null,true); // Se agrega pantalla modal de LOGIN de Usuario
+			$sections["container"].=$this->load->view($this->views->RECORDAR,null,true); // Se agrega pantalla modal de RECORDAR de Usuario
+		}
+		$sections["estilo"]='';
+		$main["body"]=$this->load->view($this->views->CONTAINER,$sections,true);
+
+		if($isLogin==false){
+			$main["plugins"]="<script src='".base_url()."js/pages/custom/listaNegocios.js'></script>";
+			$main["plugins"].=$this->load->view($this->views->VENTANA_MODALES,null,true);
+		}else{
+			$main["plugins"]="<script src='".base_url()."js/pages/custom/listaNegocios.js'></script>";
+		}
+		$this->load->view($this->views->MAIN,$main);	
+	}
+
 	public function mapa(){
-		$ubicaciones=$this->NegocioUbicacionModel->obtenerUbicaciones();
+		$ubicaciones=$this->NegocioUbicacionModel->obtenerUbicaciones()->result();
 		echo json_encode($ubicaciones);
 	}
 

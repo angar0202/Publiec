@@ -11,7 +11,7 @@
                             </div>                            
                         </div>
                         <!-- Start .row -->
-                        <div class="row">
+                        <div class="row" >
                             <div class="col-lg-6 col-md-6 col-sm-12">
                                 <!-- col-lg-4 start here -->
                                 <div class="panel panel-default plain">
@@ -24,7 +24,13 @@
                                             <!-- Start .row -->
                                             <div class="col-md-4">
                                                 <div class="profile-avatar">
-                                                    <img src="<?=site_url()?>img/negocio.png" alt="Avatar">
+                                                    <?
+                                                    if(count($imagenes)>0)
+                                                    {
+                                                        $rutaImagen=$imagenes[0]->Url;
+                                                    }
+                                                    ?>
+                                                    <img src="<?=site_url()?><?=$rutaImagen?>" style="max-height: 128px; max-width: 128px;" alt="Avatar">
                                                     <p class="mt10">
                                                         <?=$atendiendo?>
                                                         <span class="device">
@@ -49,15 +55,13 @@
                                                         <!-- Start .row -->
                                                         <div class="col-md-4">
                                                             <dl class="mt20">
-                                                                <dt class="text-muted">Usuario</dt>
-                                                                <dd><b>@<?=$usuario?></b></dd>
                                                                 <dt class="text-muted">Teléfono</dt>
                                                                 <dd><?=$telefono?></dd>
                                                             </dl>
                                                         </div>
                                                         <div class="col-md-8">
                                                             <dl class="mt20">
-                                                                <dt class="text-muted">Email</dt>
+                                                                <dt class="text-muted">Email/Sitio Web</dt>
                                                                 <dd><?=$email?></dd>
                                                             </dl>
                                                         </div>
@@ -109,6 +113,57 @@
                             <!-- col-lg-4 end here -->                            
                         </div>
                         <!-- End .row -->
+                        <div class="row">
+                            <div id="checkAll-active" class="col-lg-12">
+                                <!-- col-lg-10 start here -->
+                                <div class="page-header gallery-category-name">
+                                    <h5>Galeria de Imagenes</h5>                                    
+                                </div>
+                                <div class="row gallery sortable-layout">
+                                    <? foreach ($imagenes as $img) { ?>
+                                    
+                                    <? if($editar){
+                                        $style="10";
+                                    }else{
+                                        $style="12";
+                                    }
+                                    ?>
+                                    <!-- Start .row -->
+                                    <div class="col-xs-<?=$style?> col-md-3">
+                                        <!-- Start .col-md-3 -->
+                                        <div class="panel panel-default plain panelMove">
+                                            <!-- Start .panel -->
+                                            <div class="panel-heading">
+                                            <? if($editar==true){?>
+                                                <div class="btn-group" role="group">
+                                                    <button class="btn btn-default btn-link btn-sm delete-image" id="eliminarImagen" name="<?=$img->NegocioImagenID?>"><i class="fa fa-trash-o mr5"></i>Delete</button>
+                                                </div>
+                                                <? }?>
+                                            </div>
+
+                                            <div class="panel-body">
+                                                <a href="<?=base_url()?><?=$img->Url?>" data-toggle="lightbox" data-gallery="gallerymode" data-title="Yachts" data-parrent>
+                                                    <img class="img-responsive" src="<?=base_url()?><?=$img->Url?>" alt="image alt">
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>   
+                                    <? } ?>
+                                    <? if($editar==true){?>
+                                            <!-- col-lg-10 end here -->
+                                    <div class="col-lg-2">
+                                        <!-- col-lg-2 start here -->
+                                        <div class="page-header">
+                                            <h5>Subir Imagen</h5>
+                                        </div>
+                                        <div class="gallery-upload">
+                                            <form id="my-awesome-dropzone" name="<?=$negocioID?>" action="<?php echo site_url('/negocio/upload');?>" class="dropzone"></form>
+                                        </div>
+                                    </div>
+                                    <? } ?>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <!-- End .page-content-inner -->
                 </div>

@@ -1,8 +1,16 @@
 <div class="page-content-inner">
 <div class="row" id="listaPublicaciones">                            
  
-<? foreach ($publicaciones as $p) { ?>
-<div class="col-lg-4">
+<?
+$i=1;
+$cerro=false;
+$divisor=ceil(count($publicaciones)/3);
+foreach ($publicaciones as $p) { ?>
+<? if($i % $divisor==0){ $cerro=false;?>
+    </div><div class="col-lg-4">    
+  <? } elseif($i==1){ $cerro=false;?>  
+    <div class="col-lg-4">
+    <? }?>
     <div class="card" id="<?=$p['PublicacionID']?>">
       <div class="card-heading image">
         <img id="VerPerfil" src="<?=base_url()?><?=$p['ImagenNegocio']?>" alt="<?=$p['NegocioID']?>"/>
@@ -30,8 +38,10 @@
         <b></b>        
           <!--<button class="btn">Ver Perfil</button>-->
       </div>
-    </div>
-    </div>
+    </div>      
+<? $i++; } ?>
+<? if($cerro==false && count($publicaciones)>0){?>
+  </div>
 <? } ?>
 </div>
 </div>

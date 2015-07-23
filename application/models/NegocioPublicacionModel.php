@@ -70,5 +70,16 @@ order by Fecha desc";
         return $publicaciones;
     }
 
-    
+    public function listaUltimasPublicaciones(){
+        $sql="select np.Titulo,np.Descripcion,np.Fecha,n.Nombre as NombreNegocio,
+        (select ni.Url from negocioimagen ni where ni.NegocioID = n.NegocioID and ni.Url is not null limit 1) as ImagenNegocio,
+        (select count(u.NegocioUbicacionID) from negocioubicacion u 
+      inner join negociohorario nh on nh.NegocioUbicacionID = u.NegocioUbicacionID
+      where current_time between maketime(nh.HoraInicio,nh.MinutoInicio,0) and maketime(nh.HoraFin,nh.MinutoFin,0)
+      and weekday(current_date)+1=nh.Dia and u.NegocioID = n.NegocioID) as Atendiendo
+        from negociopublicacion np 
+        inner join negocio n on n.NegocioID = np.NegocioID
+        order by Fecha desc";
+        return $this->db->query($sql)->result();
+    }    
 }
